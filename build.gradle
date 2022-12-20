@@ -110,7 +110,7 @@ spotless {
             include '**/*.java'
             exclude '**/build/**', '**/build-*/**'
         }
-        // ratchetFrom 'HEAD'
+        ratchetFrom 'HEAD'
         toggleOffOn()
         googleJavaFormat()
         importOrder('com.rambots4571', 'edu.wpi')
