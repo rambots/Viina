@@ -1,0 +1,54 @@
+name: build
+
+on:
+  [push, pull_request]
+
+env:
+  JAVA_VERSION: 11
+  GRADLE_VERSION: 7.5
+
+jobs:
+  spotless-check:
+    name: spotless check
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+    
+    - name: set up jdk ${{ env.JAVA_VERSION }}
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: 'microsoft'
+    
+    - name: setup gradle ${{ env.GRADLE_VERSION }}
+      uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: ${{ env.GRADLE_VERSION }}
+
+    - name: run spotless check
+      run: ./gradlew spotlessCheck
+
+  build:
+    name: build project
+    needs:
+    - spotless-check
+    
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+    
+    - name: set up jdk ${{ env.JAVA_VERSION }}
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: 'microsoft'
+    
+    - name: setup gradle ${{ env.GRADLE_VERSION }}
+      uses: gradle/gradle-build-action@v2
+      with:
+        gradle-version: ${{ env.GRADLE_VERSION }}
+
+    - name: build project
+      run: ./gradlew build

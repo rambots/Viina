@@ -1,0 +1,17 @@
+#!/bin/sh
+
+echo 'applying project codestyle'
+
+stagedFiles=$(git diff --staged --name-only)
+
+./gradlew spotlessApply || exit 1
+
+RESULT=$?
+
+for file in $stagedFiles; do
+  if test -f "$file"; then
+    git add $file
+  fi
+done
+
+exit $RESULT
