@@ -4,6 +4,8 @@
 
 package com.rambots4571.chargedup.robot.subsystems;
 
+import org.json.simple.parser.Yytoken;
+
 import com.ctre.phoenix.sensors.Pigeon2;
 
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
@@ -11,6 +13,7 @@ import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.swervedrivespecialties.swervelib.Mk4iSwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveTrain extends SubsystemBase {
@@ -53,6 +56,11 @@ public class DriveTrain extends SubsystemBase {
             DriveConstants.BACK_RIGHT_STEER_OFFSET);
 
     gyro = new Pigeon2(DriveConstants.PIGEON_IMU_2);
+  }
+
+  // gyro.getFusedHeading() returns a value from 0 to 360
+  public double getGyroHeading() {
+    return gyro.getYaw();
   }
 
   @Override
