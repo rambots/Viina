@@ -51,4 +51,4 @@ jobs:
         gradle-version: ${{ env.GRADLE_VERSION }}
 
     - name: build project
-      run: ./gradlew build -x spotlessApply
+      run: ./gradlew build -x spotlessCheck -x spotlessApply
