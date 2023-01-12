@@ -4,11 +4,12 @@
 
 package com.rambots4571.chargedup.robot;
 
+import java.util.Map;
+
 import com.rambots4571.chargedup.robot.utils.Alert;
 import com.rambots4571.chargedup.robot.utils.Alert.AlertType;
 
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.RobotState;
 
 public final class Constants {
 
@@ -38,11 +39,16 @@ public final class Constants {
   }
 
   public static class Settings {
+    ///////////////// ADVANTAGE KIT LOGGING /////////////////
+
     private static final RobotType robot = RobotType.ROBOT_2023P;
 
     private static final Alert invalidRobotAlert =
       new Alert("Invalid robot selected, using competition robot as default.", AlertType.ERROR);
 
+    public static final Map<RobotType, String> logFolders =
+      Map.of(RobotType.ROBOT_2023P, "/media/sda2/");
+  
     public static enum Mode {
       REAL,
       REPLAY,
@@ -65,6 +71,20 @@ public final class Constants {
         }
       } else {
         return robot;
+      }
+    }
+
+    public static Mode getMode() {
+      switch (getRobot()) {
+        case ROBOT_2023C:
+        case ROBOT_2023P:
+          return RobotBase.isReal() ? Mode.REAL : Mode.REPLAY;
+  
+        case ROBOT_SIMBOT:
+          return Mode.SIM;
+  
+        default:
+          return Mode.REAL;
       }
     }
   }
