@@ -4,11 +4,18 @@
 
 package com.rambots4571.chargedup.robot;
 
+import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class RobotContainer {
 
+  // Subsytems
+  private final DriveTrain driveTrain;
+
   public RobotContainer() {
+    driveTrain = DriveTrain.getInstance();
+
     configureBindings();
   }
 
