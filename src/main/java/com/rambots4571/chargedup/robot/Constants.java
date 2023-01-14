@@ -70,10 +70,10 @@ public final class Constants {
         COTSFalconSwerveConstants.SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4i_L2);
 
     // Inversions
-    public static final boolean driveMotorInvert = chosenModule.driveMotorInvert;
-    public static final boolean turnMotorInvert = chosenModule.angleMotorInvert;
+    public static final boolean driveMotorInvert = chosenModule.isDriveMotorInvert();
+    public static final boolean turnMotorInvert = chosenModule.isAngleMotorInvert();
 
-    public static final boolean canCoderInvert = chosenModule.canCoderInvert;
+    public static final boolean canCoderInvert = chosenModule.isAngleMotorInvert();
 
     public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
@@ -94,10 +94,10 @@ public final class Constants {
 
     public static final double kTrackWidthMeters = 0.42;
     public static final double kWheelBaseMeters = 0.73;
-    public static final double kWheelCircumference = chosenModule.wheelCircumference;
+    public static final double kWheelCircumference = chosenModule.getCircumference();
 
-    public static final double kDriveGearRatio = chosenModule.driveGearRatio;
-    public static final double kTurnGrearRatio = chosenModule.angleGearRatio;
+    public static final double kDriveGearRatio = chosenModule.getDriveGearRatio();
+    public static final double kTurnGrearRatio = chosenModule.getAngleGearRatio();
 
     public static final double kMaxSpeedMetersPerSecond = 3.0;
 
@@ -115,10 +115,10 @@ public final class Constants {
             new Translation2d(-kTrackWidthMeters / 2.0, -kWheelBaseMeters / 2.0));
 
     ///////////////// CONTROL CHARACTERISTICS /////////////////
-    public static final double angleKP = chosenModule.angleKP;
-    public static final double angleKI = chosenModule.angleKI;
-    public static final double angleKD = chosenModule.angleKD;
-    public static final double angleKF = chosenModule.angleKF;
+    public static final double angleKP = chosenModule.getAngleKP();
+    public static final double angleKI = chosenModule.getAngleKI();
+    public static final double angleKD = chosenModule.getAngleKD();
+    public static final double angleKF = chosenModule.getAngleKF();
 
     public static final double driveKP = 0.05; // TODO: Tune this
     public static final double driveKI = 0.0;
