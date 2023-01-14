@@ -24,9 +24,9 @@ import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import com.rambots4571.chargedup.robot.Constants.Settings;
-import com.rambots4571.chargedup.robot.utils.Alert;
-import com.rambots4571.chargedup.robot.utils.BatteryTracker;
-import com.rambots4571.chargedup.robot.utils.Alert.AlertType;
+import com.rambots4571.rampage.telemetry.Alert;
+import com.rambots4571.rampage.telemetry.BatteryTracker;
+import com.rambots4571.rampage.telemetry.Alert.AlertType;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to

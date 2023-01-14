@@ -5,11 +5,10 @@
 package com.rambots4571.chargedup.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-
-import com.rambots4571.chargedup.robot.utils.Alert;
-import com.rambots4571.chargedup.robot.utils.Alert.AlertType;
-import com.rambots4571.chargedup.robot.utils.COTSFalconSwerveConstants;
-import com.rambots4571.chargedup.robot.utils.SwerveModuleConstants;
+import com.rambots4571.rampage.swerve.COTSFalconSwerveConstants;
+import com.rambots4571.rampage.swerve.SwerveModuleConstants;
+import com.rambots4571.rampage.telemetry.Alert;
+import com.rambots4571.rampage.telemetry.Alert.AlertType;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;

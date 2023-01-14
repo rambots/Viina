@@ -14,7 +14,7 @@ public class CTREConfigs {
   public static TalonFXConfiguration driveFXConfig, turnFXConfig;
   public static CANCoderConfiguration canCoderConfig;
 
-  private final SupplyCurrentLimitConfiguration angleCurrentLimit, driveCurrentLimit;
+  public static SupplyCurrentLimitConfiguration angleCurrentLimit, driveCurrentLimit;
 
   public CTREConfigs() {
     driveFXConfig = new TalonFXConfiguration();
