@@ -41,54 +41,7 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain() {
     swerveTab = Shuffleboard.getTab("DriveTrain");
 
-    frontLeft =
-        Mk4iSwerveModuleHelper.createFalcon500(
-            swerveTab
-                .getLayout("Front Left Module", BuiltInLayouts.kList)
-                .withSize(2, 4)
-                .withPosition(0, 0),
-            Mk4iSwerveModuleHelper.GearRatio.L2,
-            DriveConstants.FRONT_LEFT_DRIVE_MOTOR,
-            DriveConstants.FRONT_LEFT_STEER_MOTOR,
-            DriveConstants.FRONT_LEFT_STEER_ENCODER,
-            DriveConstants.FRONT_LEFT_STEER_OFFSET);
-
-    frontRight =
-        Mk4iSwerveModuleHelper.createFalcon500(
-            swerveTab
-                .getLayout("Front Right Module", BuiltInLayouts.kList)
-                .withSize(2, 4)
-                .withPosition(2, 0),
-            Mk4iSwerveModuleHelper.GearRatio.L2,
-            DriveConstants.FRONT_RIGHT_DRIVE_MOTOR,
-            DriveConstants.FRONT_RIGHT_STEER_MOTOR,
-            DriveConstants.FRONT_RIGHT_STEER_ENCODER,
-            DriveConstants.FRONT_RIGHT_STEER_OFFSET);
-
-    backLeft =
-        Mk4iSwerveModuleHelper.createFalcon500(
-            swerveTab
-                .getLayout("Back Left Module", BuiltInLayouts.kList)
-                .withSize(2, 4)
-                .withPosition(4, 0),
-            Mk4iSwerveModuleHelper.GearRatio.L2,
-            DriveConstants.BACK_LEFT_DRIVE_MOTOR,
-            DriveConstants.BACK_LEFT_STEER_MOTOR,
-            DriveConstants.BACK_LEFT_STEER_ENCODER,
-            DriveConstants.BACK_LEFT_STEER_OFFSET);
-
-    backRight =
-        Mk4iSwerveModuleHelper.createFalcon500(
-            swerveTab
-                .getLayout("Back Right Module", BuiltInLayouts.kList)
-                .withSize(2, 4)
-                .withPosition(6, 0),
-            Mk4iSwerveModuleHelper.GearRatio.L2,
-            DriveConstants.BACK_RIGHT_DRIVE_MOTOR,
-            DriveConstants.BACK_RIGHT_STEER_MOTOR,
-            DriveConstants.BACK_RIGHT_STEER_ENCODER,
-            DriveConstants.BACK_RIGHT_STEER_OFFSET);
-
+    
     m_gyro = new Pigeon2(DriveConstants.PIGEON_IMU_2);
   }
 
@@ -96,14 +49,7 @@ public class DriveTrain extends SubsystemBase {
   // ************** Driving ******************
   // *****************************************
 
-  public void setModuleStates(SwerveModuleState[] states) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.kMaxSpeedMetersPerSecond);
-    frontLeft.set(states[0].speedMetersPerSecond / DriveConstants.kMaxSpeedMetersPerSecond * DriveConstants.kMaxVoltage, states[0].angle.getRadians());
-    frontRight.set(states[1].speedMetersPerSecond / DriveConstants.kMaxSpeedMetersPerSecond * DriveConstants.kMaxVoltage, states[1].angle.getRadians());
-    backLeft.set(states[2].speedMetersPerSecond / DriveConstants.kMaxSpeedMetersPerSecond * DriveConstants.kMaxVoltage, states[2].angle.getRadians());
-    backRight.set(states[3].speedMetersPerSecond / DriveConstants.kMaxSpeedMetersPerSecond * DriveConstants.kMaxVoltage, states[3].angle.getRadians());
-
-  }
+  
 
   // *****************************************
   // ************* Robot Angle ***************
