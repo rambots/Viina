@@ -23,16 +23,16 @@ public class SwerveModule {
 
   public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants) {
     this.moduleNumber = moduleNumber;
-    this.angleOffset = moduleConstants.angleOffset;
+    this.angleOffset = moduleConstants.getAngleOffset();
 
     // Configs
-    driveMotor = new TalonFX(moduleConstants.driveMotorID);
+    driveMotor = new TalonFX(moduleConstants.getDriveMotorID());
     configDriveMotor();
 
-    turnMotor = new TalonFX(moduleConstants.angleMotorID);
+    turnMotor = new TalonFX(moduleConstants.getAngleMotorID());
     configTurnMotor();
 
-    angleEncoder = new CANCoder(moduleConstants.cancoderID);
+    angleEncoder = new CANCoder(moduleConstants.getCancoderID());
     configAngleEncoder();
 
     lastAngle = getState().angle;
