@@ -8,27 +8,19 @@ import com.ctre.phoenix.sensors.Pigeon2;
 
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 
-import com.swervedrivespecialties.swervelib.Mk4iSwerveModuleHelper;
-import com.swervedrivespecialties.swervelib.SwerveModule;
-
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveTrain extends SubsystemBase {
 
-  private final SwerveModule frontLeft, frontRight, backLeft, backRight;
+  // private final SwerveModule frontLeft, frontRight, backLeft, backRight;
 
   private final ShuffleboardTab swerveTab;
 
-  private final SwerveDriveOdometry m_Odometry;
-  private final Field2d field;
+  // private final SwerveDriveOdometry m_Odometry;
+  // private final Field2d field;
 
   private final Pigeon2 m_gyro;
 
@@ -38,18 +30,15 @@ public class DriveTrain extends SubsystemBase {
     return instance;
   }
 
-  public DriveTrain() {
+  private DriveTrain() {
     swerveTab = Shuffleboard.getTab("DriveTrain");
 
-    
     m_gyro = new Pigeon2(DriveConstants.PIGEON_IMU_2);
   }
 
   // *****************************************
   // ************** Driving ******************
   // *****************************************
-
-  
 
   // *****************************************
   // ************* Robot Angle ***************
