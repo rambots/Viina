@@ -5,6 +5,7 @@
 package com.rambots4571.chargedup.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.rambots4571.rampage.joystick.Gamepad;
 import com.rambots4571.rampage.swerve.COTSFalconSwerveConstants;
 import com.rambots4571.rampage.swerve.SwerveModuleConstants;
 import com.rambots4571.rampage.telemetry.Alert;
@@ -15,6 +16,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.XboxController;
+
 import java.util.Map;
 
 public final class Constants {
@@ -99,6 +102,7 @@ public final class Constants {
     public static final double kTurnGrearRatio = chosenModule.getAngleGearRatio();
 
     public static final double kMaxSpeedMetersPerSecond = 3.0;
+    public static final double kMaxAngularSpeedMetersPerSecond = 4.0;
 
     public static final double kMaxVoltage = 12.0;
 
@@ -181,5 +185,16 @@ public final class Constants {
           return Mode.REAL;
       }
     }
+
+    ///////////////// JOYSTICKS /////////////////
+
+    public static final int DRIVERCONTROLLER = 3;
+
+    public static final double STICK_DEADBAND = 0.1;
+
+    public static final int translationAxis = Gamepad.Axis.LeftYAxis.getNumber();
+    public static final int strafeAxis = Gamepad.Axis.LeftXAxis.getNumber();
+    public static final int rotationAxis = Gamepad.Axis.RightXAxis.getNumber();
+    public static final int dabub = XboxController.Axis.kLeftY.value;
   }
 }
