@@ -7,20 +7,23 @@ package com.rambots4571.chargedup.robot.subsystems;
 import com.ctre.phoenix.sensors.Pigeon2;
 
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
+import com.rambots4571.chargedup.robot.utils.SwerveModule;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveTrain extends SubsystemBase {
 
-  // private final SwerveModule frontLeft, frontRight, backLeft, backRight;
-
-  private final ShuffleboardTab swerveTab;
-
-  // private final SwerveDriveOdometry m_Odometry;
-  // private final Field2d field;
+  private final SwerveModule[] modules;
+  private final SwerveDriveOdometry m_Odometry;
 
   private final Pigeon2 m_gyro;
 
@@ -31,14 +34,52 @@ public class DriveTrain extends SubsystemBase {
   }
 
   private DriveTrain() {
-    swerveTab = Shuffleboard.getTab("DriveTrain");
+    modules =
+        new SwerveModule[] {
+          new SwerveModule(0, DriveConstants.Mod0.constants),
+          new SwerveModule(1, DriveConstants.Mod1.constants),
+          new SwerveModule(2, DriveConstants.Mod2.constants),
+          new SwerveModule(3, DriveConstants.Mod3.constants)
+        };
 
     m_gyro = new Pigeon2(DriveConstants.PIGEON_IMU_2);
+    m_gyro.configFactoryDefault();
+    zeroGyro();
+
+    m_Odometry =
+        new SwerveDriveOdometry(
+            DriveConstants.kDriveKinematics, getRotation2d(), getModulePositions());
   }
 
   // *****************************************
   // ************** Driving ******************
   // *****************************************
+
+  public void drive(
+      Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
+    SwerveModuleState[] states =
+        DriveConstants.kDriveKinematics.toSwerveModuleStates(
+            fieldRelative
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(
+                    translation.getX(), translation.getY(), rotation, getRotation2d())
+                : new ChassisSpeeds(translation.getX(), translation.getY(), rotation));
+
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.kMaxSpeedMetersPerSecond);
+
+    for (SwerveModule mod : modules) {
+      mod.setDesiredState(states[mod.moduleNumber], isOpenLoop);
+    }
+
+  }
+
+  public SwerveModulePosition[] getModulePositions() {
+    SwerveModulePosition[] states = new SwerveModulePosition[4];
+
+    for (SwerveModule mod : modules) {
+      states[mod.moduleNumber] = mod.getPosition();
+    }
+    return states;
+  }
 
   // *****************************************
   // ************* Robot Angle ***************
@@ -49,11 +90,41 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public Rotation2d getRotation2d() {
-    return Rotation2d.fromDegrees(m_gyro.getYaw());
+    return (DriveConstants.invertGyro)
+        ? Rotation2d.fromDegrees(360 - m_gyro.getYaw())
+        : Rotation2d.fromDegrees(m_gyro.getYaw());
+  }
+
+  public void zeroGyro() {
+    m_gyro.setYaw(0);
+  }
+
+  // *****************************************
+  // ************* Robot Angle ***************
+  // *****************************************
+
+  public void updateOdometry() {
+    m_Odometry.update(getRotation2d(), getModulePositions());
+  }
+
+  public void resetOdometry(Pose2d pose) {
+    m_Odometry.resetPosition(getRotation2d(), getModulePositions(), pose);
+  }
+
+  public Pose2d getPose() {
+    return m_Odometry.getPoseMeters();
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    updateOdometry();
+
+    for(SwerveModule mod : modules) {
+      SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
+      SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
+      SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
+    }
+  }
 
   @Override
   public void simulationPeriodic() {}
