@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
+import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.rampage.math.Converter;
 import com.rambots4571.rampage.swerve.SwerveModuleConstants;
 
@@ -45,7 +46,8 @@ public class SwerveModule {
   // *****************************************
 
   public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
-    desiredState = com.rambots4571.rampage.swerve.CTREModuleState.optimize(desiredState, getState().angle);
+    desiredState =
+        com.rambots4571.rampage.swerve.CTREModuleState.optimize(desiredState, getState().angle);
 
     setAngle(desiredState);
     setSpeed(desiredState, isOpenLoop);
@@ -130,8 +132,7 @@ public class SwerveModule {
 
   private void configDriveMotor() {
     driveMotor.configFactoryDefault();
-    driveMotor.configAllSettings(CTREConfigs.driveFXConfig);
-    driveMotor.configSupplyCurrentLimit(CTREConfigs.driveCurrentLimit);
+    driveMotor.configAllSettings(CTREConfigs.driveFXConfig, Settings.timeoutMs);
     driveMotor.setInverted(DriveConstants.driveMotorInvert);
     driveMotor.setNeutralMode(DriveConstants.driveNeutralMode);
     driveMotor.setSelectedSensorPosition(0);
@@ -139,8 +140,7 @@ public class SwerveModule {
 
   private void configTurnMotor() {
     turnMotor.configFactoryDefault();
-    turnMotor.configAllSettings(CTREConfigs.turnFXConfig);
-    turnMotor.configSupplyCurrentLimit(CTREConfigs.angleCurrentLimit);
+    turnMotor.configAllSettings(CTREConfigs.turnFXConfig, Settings.timeoutMs);
     turnMotor.setInverted(DriveConstants.turnMotorInvert);
     turnMotor.setNeutralMode(DriveConstants.angleNeutralMode);
     resetToAbsolute();
@@ -148,6 +148,6 @@ public class SwerveModule {
 
   private void configAngleEncoder() {
     angleEncoder.configFactoryDefault();
-    angleEncoder.configAllSettings(CTREConfigs.canCoderConfig);
+    angleEncoder.configAllSettings(CTREConfigs.canCoderConfig, Settings.timeoutMs);
   }
 }

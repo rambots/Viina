@@ -35,6 +35,7 @@ public class CTREConfigs {
     turnFXConfig.slot0.kI = DriveConstants.angleKI;
     turnFXConfig.slot0.kD = DriveConstants.angleKD;
     turnFXConfig.slot0.kF = DriveConstants.angleKF;
+    turnFXConfig.supplyCurrLimit = angleCurrentLimit;
 
     // Drive Motor Configs
     driveCurrentLimit =
@@ -48,6 +49,9 @@ public class CTREConfigs {
     driveFXConfig.slot0.kI = DriveConstants.driveKI;
     driveFXConfig.slot0.kD = DriveConstants.driveKD;
     driveFXConfig.slot0.kF = DriveConstants.driveKF;
+    driveFXConfig.supplyCurrLimit = driveCurrentLimit;
+    driveFXConfig.openloopRamp = DriveConstants.openLoopRamp;
+    driveFXConfig.closedloopRamp = DriveConstants.closedLoopRamp;
 
     // CANCoder Configs
     canCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;

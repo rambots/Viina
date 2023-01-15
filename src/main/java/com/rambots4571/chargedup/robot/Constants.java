@@ -138,6 +138,9 @@ public final class Constants {
     public static final double kV = (1.98 / 12.0);
     public static final double kA = (0.2 / 12.0);
 
+    public static final double openLoopRamp = 0.25;
+    public static final double closedLoopRamp = 0.0;
+
     public static final SimpleMotorFeedforward swerveFF = new SimpleMotorFeedforward(kS, kV, kA);
 
     public static final PIDConstants tranlationPID = new PIDConstants(driveKP, driveKI, driveKD);
@@ -146,6 +149,8 @@ public final class Constants {
   }
 
   public static class Settings {
+    public static final int timeoutMs = 10;
+
     ///////////////// ADVANTAGE KIT LOGGING /////////////////
 
     private static final RobotType robot = RobotType.ROBOT_2023P;
