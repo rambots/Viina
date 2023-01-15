@@ -7,7 +7,9 @@ import com.ctre.phoenix.sensors.CANCoder;
 
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Constants.Settings;
+import com.rambots4571.chargedup.robot.Robot;
 import com.rambots4571.rampage.math.Converter;
+import com.rambots4571.rampage.swerve.CTREModuleState;
 import com.rambots4571.rampage.swerve.SwerveModuleConstants;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -18,11 +20,13 @@ public class SwerveModule {
 
   public int moduleNumber;
   private Rotation2d lastAngle;
-  private final Rotation2d angleOffset;
+  private Rotation2d angleOffset;
 
-  private final TalonFX driveMotor;
-  private final TalonFX turnMotor;
-  private final CANCoder angleEncoder;
+  private TalonFX driveMotor;
+  private TalonFX turnMotor;
+  private CANCoder angleEncoder;
+
+  public double CANcoderInitTime = 0.0;
 
   public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants) {
     this.moduleNumber = moduleNumber;
@@ -46,8 +50,7 @@ public class SwerveModule {
   // *****************************************
 
   public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
-    desiredState =
-        com.rambots4571.rampage.swerve.CTREModuleState.optimize(desiredState, getState().angle);
+    desiredState = CTREModuleState.optimize(desiredState, getState().angle);
 
     setAngle(desiredState);
     setSpeed(desiredState, isOpenLoop);
@@ -119,6 +122,7 @@ public class SwerveModule {
   }
 
   private void resetToAbsolute() {
+
     double absolutePosition =
         Converter.degreesToFalcon(
             (getCanCoder().getDegrees() - angleOffset.getDegrees()),
@@ -132,7 +136,7 @@ public class SwerveModule {
 
   private void configDriveMotor() {
     driveMotor.configFactoryDefault();
-    driveMotor.configAllSettings(CTREConfigs.driveFXConfig, Settings.timeoutMs);
+    driveMotor.configAllSettings(Robot.configs.driveFXConfig, Settings.timeoutMs);
     driveMotor.setInverted(DriveConstants.driveMotorInvert);
     driveMotor.setNeutralMode(DriveConstants.driveNeutralMode);
     driveMotor.setSelectedSensorPosition(0);
@@ -140,7 +144,7 @@ public class SwerveModule {
 
   private void configTurnMotor() {
     turnMotor.configFactoryDefault();
-    turnMotor.configAllSettings(CTREConfigs.turnFXConfig, Settings.timeoutMs);
+    turnMotor.configAllSettings(Robot.configs.turnFXConfig, Settings.timeoutMs);
     turnMotor.setInverted(DriveConstants.turnMotorInvert);
     turnMotor.setNeutralMode(DriveConstants.angleNeutralMode);
     resetToAbsolute();
@@ -148,6 +152,6 @@ public class SwerveModule {
 
   private void configAngleEncoder() {
     angleEncoder.configFactoryDefault();
-    angleEncoder.configAllSettings(CTREConfigs.canCoderConfig, Settings.timeoutMs);
+    angleEncoder.configAllSettings(Robot.configs.canCoderConfig, Settings.timeoutMs);
   }
 }

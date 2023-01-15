@@ -18,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -52,6 +53,16 @@ public class DriveTrain extends SubsystemBase {
             DriveConstants.kDriveKinematics, getRotation2d(), getModulePositions());
 
     resetOdometry(Settings.STARTING_POSITION);
+
+    for (SwerveModule mod : modules) {
+      DriverStation.reportError(
+          "CANcoder on Module "
+              + mod.moduleNumber
+              + " took "
+              + mod.CANcoderInitTime
+              + " ms to be ready.",
+          false);
+    }
   }
 
   // *****************************************

@@ -11,10 +11,10 @@ import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 
 public class CTREConfigs {
 
-  public static TalonFXConfiguration driveFXConfig, turnFXConfig;
-  public static CANCoderConfiguration canCoderConfig;
+  public TalonFXConfiguration driveFXConfig, turnFXConfig;
+  public CANCoderConfiguration canCoderConfig;
 
-  public static SupplyCurrentLimitConfiguration angleCurrentLimit, driveCurrentLimit;
+  public SupplyCurrentLimitConfiguration angleCurrentLimit, driveCurrentLimit;
 
   public CTREConfigs() {
     // TODO: Potential Null Pointer Error Location
