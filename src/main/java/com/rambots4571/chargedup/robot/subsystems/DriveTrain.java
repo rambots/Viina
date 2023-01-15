@@ -7,6 +7,7 @@ package com.rambots4571.chargedup.robot.subsystems;
 import com.ctre.phoenix.sensors.Pigeon2;
 
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
+import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.chargedup.robot.utils.SwerveModule;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -49,6 +50,8 @@ public class DriveTrain extends SubsystemBase {
     m_Odometry =
         new SwerveDriveOdometry(
             DriveConstants.kDriveKinematics, getRotation2d(), getModulePositions());
+
+    resetOdometry(Settings.STARTING_POSITION);
   }
 
   // *****************************************
@@ -69,7 +72,15 @@ public class DriveTrain extends SubsystemBase {
     for (SwerveModule mod : modules) {
       mod.setDesiredState(states[mod.moduleNumber], isOpenLoop);
     }
+  }
 
+  public void setModuleStates(SwerveModuleState[] desiredStates) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
+
+    for (SwerveModule mod : modules) {
+      mod.setDesiredState(desiredStates[mod.moduleNumber], false);
+    }
   }
 
   public SwerveModulePosition[] getModulePositions() {
@@ -119,10 +130,13 @@ public class DriveTrain extends SubsystemBase {
   public void periodic() {
     updateOdometry();
 
-    for(SwerveModule mod : modules) {
-      SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
-      SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
-      SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
+    for (SwerveModule mod : modules) {
+      SmartDashboard.putNumber(
+          "Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
+      SmartDashboard.putNumber(
+          "Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
+      SmartDashboard.putNumber(
+          "Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
     }
   }
 
