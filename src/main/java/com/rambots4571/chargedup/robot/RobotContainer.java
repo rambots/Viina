@@ -4,6 +4,9 @@
 
 package com.rambots4571.chargedup.robot;
 
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
+
+import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.chargedup.robot.commands.SwerveDriveCommand;
 import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
@@ -18,33 +21,52 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
 
-  // Misceallaneous 
-  public static final Controller<Gamepad.Button, Gamepad.Axis> driverController = Gamepad.make(Settings.DRIVERCONTROLLER);
+  // Misceallaneous
+  public final Controller<Gamepad.Button, Gamepad.Axis> driverController =
+      Gamepad.make(Settings.DRIVERCONTROLLER);
+  public final Trigger robotCentricToggle = new Trigger(driverController.getButton(Button.Y));
 
-  public static final SendableChooser<Command> autonChooser = new SendableChooser<>();
+  public final SendableChooser<Command> autonChooser = new SendableChooser<>();
 
-  private final Trigger robotCentricToggle = new Trigger(driverController.getButton(Button.Y));
+  public final SwerveAutoBuilder autoBuilder;
 
   // Subsytems
   private final DriveTrain driveTrain;
 
-  // Commands 
+  // Commands
   private final SwerveDriveCommand swerveDriveCommand;
 
   public RobotContainer() {
     driveTrain = DriveTrain.getInstance();
 
-    swerveDriveCommand = new SwerveDriveCommand(
-      driveTrain, 
-      () -> -driverController.getRawAxis(Settings.translationAxis),
-      () -> -driverController.getRawAxis(Settings.strafeAxis),
-      () -> -driverController.getRawAxis(Settings.rotationAxis),
-      () -> robotCentricToggle.getAsBoolean()); 
+    swerveDriveCommand =
+        new SwerveDriveCommand(
+            driveTrain,
+            () -> -driverController.getRawAxis(Settings.translationAxis),
+            () -> -driverController.getRawAxis(Settings.strafeAxis),
+            () -> -driverController.getRawAxis(Settings.rotationAxis),
+            () -> robotCentricToggle.getAsBoolean());
 
-    driveTrain.setDefaultCommand(swerveDriveCommand);  
+    driveTrain.setDefaultCommand(swerveDriveCommand);
+
+    // Other Such Stuff
+    autoBuilder =
+        new SwerveAutoBuilder(
+            driveTrain::getPose,
+            driveTrain::resetOdometry,
+            DriveConstants.kDriveKinematics,
+            DriveConstants.tranlationPID,
+            DriveConstants.rotationPID,
+            driveTrain::setModuleStates,
+            Settings.eventMap,
+            driveTrain);
 
     configureBindings();
+
+    setEventMap();
   }
+
+  private void setEventMap() {}
 
   private void configureBindings() {
     // (DriverController) Y -> Rest Gyro

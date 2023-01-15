@@ -5,6 +5,8 @@
 package com.rambots4571.chargedup.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.pathplanner.lib.auto.PIDConstants;
+
 import com.rambots4571.rampage.joystick.Gamepad;
 import com.rambots4571.rampage.swerve.COTSFalconSwerveConstants;
 import com.rambots4571.rampage.swerve.SwerveModuleConstants;
@@ -12,12 +14,15 @@ import com.rambots4571.rampage.telemetry.Alert;
 import com.rambots4571.rampage.telemetry.Alert.AlertType;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public final class Constants {
@@ -134,6 +139,10 @@ public final class Constants {
     public static final double kA = (0.2 / 12.0);
 
     public static final SimpleMotorFeedforward swerveFF = new SimpleMotorFeedforward(kS, kV, kA);
+
+    public static final PIDConstants tranlationPID = new PIDConstants(driveKP, driveKI, driveKD);
+
+    public static final PIDConstants rotationPID = new PIDConstants(angleKP, angleKI, angleKD);
   }
 
   public static class Settings {
@@ -196,5 +205,19 @@ public final class Constants {
     public static final int strafeAxis = Gamepad.Axis.LeftXAxis.getNumber();
     public static final int rotationAxis = Gamepad.Axis.RightXAxis.getNumber();
     public static final int dabub = XboxController.Axis.kLeftY.value;
+
+    ///////////////// AUTON /////////////////
+
+    public static final Translation2d STARTING_TRANSLATION = new Translation2d();
+    public static final Rotation2d STARTING_ANGLE = new Rotation2d();
+
+    public static final Pose2d STARTING_POSITION = new Pose2d(STARTING_TRANSLATION, STARTING_ANGLE);
+
+    public static HashMap<String, Command> eventMap = new HashMap<String, Command>();
+  }
+
+  public static final class AutoPaths {
+    // TODO: Add a path literally anything m1 m1 uptilt into chaser blood vial wipe to AA gun
+    // synapse oath ethiron cheese
   }
 }
