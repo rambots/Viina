@@ -15,6 +15,7 @@ import com.rambots4571.rampage.joystick.Gamepad;
 import com.rambots4571.rampage.joystick.Gamepad.Button;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -61,6 +62,10 @@ public class RobotContainer {
             Settings.eventMap,
             driveTrain);
 
+    autonChooser.addOption("Bare Wasteman", null);
+
+    SmartDashboard.putData("Auton Chooser", autonChooser);
+
     configureBindings();
 
     setEventMap();
@@ -76,7 +81,7 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
 
-    return null;
+    return autonChooser.getSelected();
   }
 
   private Command zeroGyro() {
