@@ -5,6 +5,8 @@
 package com.rambots4571.chargedup.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 
 import com.rambots4571.rampage.joystick.Gamepad;
@@ -23,6 +25,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class Constants {
@@ -107,6 +110,7 @@ public final class Constants {
     public static final double kTurnGrearRatio = chosenModule.getAngleGearRatio();
 
     public static final double kMaxSpeedMetersPerSecond = 3.0;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 3.5;
     public static final double kMaxAngularSpeedMetersPerSecond = 4.0;
 
     public static final double kMaxVoltage = 12.0;
@@ -222,7 +226,10 @@ public final class Constants {
   }
 
   public static final class AutoPaths {
-    // TODO: Add a path literally anything m1 m1 uptilt into chaser blood vial wipe to AA gun
-    // synapse oath ethiron cheese
+    public static final List<PathPlannerTrajectory> TwoCargoBot = 
+        PathPlanner.loadPathGroup(
+          "2CargoBottomBalance", 
+          DriveConstants.kMaxSpeedMetersPerSecond, 
+          DriveConstants.kMaxAccelerationMetersPerSecondSquared);
   }
 }

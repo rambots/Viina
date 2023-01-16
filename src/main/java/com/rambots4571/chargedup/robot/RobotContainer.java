@@ -5,7 +5,7 @@
 package com.rambots4571.chargedup.robot;
 
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
-
+import com.rambots4571.chargedup.robot.Constants.AutoPaths;
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.chargedup.robot.commands.SwerveDriveCommand;
@@ -62,7 +62,10 @@ public class RobotContainer {
             Settings.eventMap,
             driveTrain);
 
+    Command TwoCargoBot = autoBuilder.fullAuto(AutoPaths.TwoCargoBot);
+
     autonChooser.addOption("Bare Wasteman", null);
+    autonChooser.addOption("2 Cargo Bottom", TwoCargoBot);
 
     SmartDashboard.putData("Auton Chooser", autonChooser);
 
