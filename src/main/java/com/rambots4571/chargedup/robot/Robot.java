@@ -4,17 +4,22 @@
 
 package com.rambots4571.chargedup.robot;
 
+import com.rambots4571.chargedup.robot.Constants.Settings;
+import com.rambots4571.chargedup.robot.utils.CTREConfigs;
+import com.rambots4571.rampage.telemetry.Alert;
+import com.rambots4571.rampage.telemetry.Alert.AlertType;
+import com.rambots4571.rampage.telemetry.BatteryTracker;
+
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
-
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -22,11 +27,6 @@ import org.littletonrobotics.junction.inputs.LoggedPowerDistribution;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-
-import com.rambots4571.chargedup.robot.Constants.Settings;
-import com.rambots4571.chargedup.robot.utils.Alert;
-import com.rambots4571.chargedup.robot.utils.BatteryTracker;
-import com.rambots4571.chargedup.robot.utils.Alert.AlertType;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -36,6 +36,7 @@ import com.rambots4571.chargedup.robot.utils.Alert.AlertType;
  */
 public class Robot extends LoggedRobot {
   private RobotContainer container;
+  public static CTREConfigs configs;
   private Command autoCommand;
 
   private Logger logger;
@@ -53,6 +54,8 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotInit() {
+    configs = new CTREConfigs();
+
     container = new RobotContainer();
 
     // Advantage Kit Setup
@@ -91,7 +94,7 @@ public class Robot extends LoggedRobot {
         logger.addDataReceiver(new NT4Publisher());
         LoggedPowerDistribution.getInstance(0, ModuleType.kRev);
         break;
-       
+
       case SIM:
         logger.addDataReceiver(new NT4Publisher());
         break;
@@ -114,10 +117,12 @@ public class Robot extends LoggedRobot {
           String name = command.getName();
           int count = commandCounts.getOrDefault(name, 0) + (active ? 1 : -1);
           commandCounts.put(name, count);
-          Logger.getInstance().recordOutput("CommandsUnique/" + name + "_" + Integer.toHexString(command.hashCode()), active);
+          Logger.getInstance()
+              .recordOutput(
+                  "CommandsUnique/" + name + "_" + Integer.toHexString(command.hashCode()), active);
           Logger.getInstance().recordOutput("CommandsAll/" + name, count > 0);
         };
-    
+
     CommandScheduler.getInstance()
         .onCommandInitialize(
             (Command command) -> {

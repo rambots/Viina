@@ -1,7 +1,8 @@
 {
   "NTProvider": {
     "types": {
-      "/FMSInfo": "FMSInfo"
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Auton Chooser": "String Chooser"
     }
   },
   "NetworkTables": {
@@ -13,14 +14,15 @@
         "open": true
       },
       "Shuffleboard": {
-        ".recording": {
-          "open": true
-        }
-      },
-      "SmartDashboard": {
-        "Alerts": {
+        ".metadata": {
           "open": true
         },
+        ".recording": {
+          "open": true
+        },
+        "open": true
+      },
+      "SmartDashboard": {
         "open": true
       }
     }
@@ -33,6 +35,9 @@
       "open": true
     },
     "Server": {
+      "Publishers": {
+        "open": true
+      },
       "open": true
     }
   }
