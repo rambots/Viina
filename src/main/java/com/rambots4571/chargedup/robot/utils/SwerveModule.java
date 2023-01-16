@@ -1,5 +1,6 @@
 package com.rambots4571.chargedup.robot.utils;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -15,6 +16,7 @@ import com.rambots4571.rampage.swerve.SwerveModuleConstants;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Timer;
 
 public class SwerveModule {
 
@@ -34,15 +36,16 @@ public class SwerveModule {
 
     // Configs
     driveMotor = new TalonFX(moduleConstants.getDriveMotorID());
-    configDriveMotor();
 
     turnMotor = new TalonFX(moduleConstants.getAngleMotorID());
-    configTurnMotor();
 
     angleEncoder = new CANCoder(moduleConstants.getCancoderID());
-    configAngleEncoder();
 
     lastAngle = getState().angle;
+
+    configDriveMotor();
+    configTurnMotor();
+    configAngleEncoder();
   }
 
   // *****************************************
@@ -121,7 +124,27 @@ public class SwerveModule {
     return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition());
   }
 
+  private void waitForCanCoder() {
+    /*
+     * Wait for up to 1000 ms for a good CANcoder signal.
+     *
+     * This prevents a race condition during program startup
+     * where we try to synchronize the Falcon encoder to the
+     * CANcoder before we have received any position signal
+     * from the CANcoder.
+     */
+    for (int i = 0; i < 100; ++i) {
+      angleEncoder.getAbsolutePosition();
+      if (angleEncoder.getLastError() == ErrorCode.OK) {
+        break;
+      }
+      Timer.delay(0.010);
+      CANcoderInitTime += 10;
+    }
+  }
+
   private void resetToAbsolute() {
+    waitForCanCoder();
 
     double absolutePosition =
         Converter.degreesToFalcon(
