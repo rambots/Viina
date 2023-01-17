@@ -43,9 +43,6 @@
     }
   },
   "NetworkTables Info": {
-    "Connections": {
-      "open": true
-    },
     "Server": {
       "Subscribers": {
         "open": true

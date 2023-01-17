@@ -3,7 +3,6 @@ package com.rambots4571.chargedup.robot.utils;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import java.util.List;
 import org.photonvision.PhotonCamera;
@@ -15,7 +14,6 @@ public class PhotonVision implements Sendable {
   private final PhotonCamera camera = new PhotonCamera("Photon Cam");
 
   private PhotonPipelineResult result;
-  private ShuffleboardTab tab;
 
   private static PhotonVision instance = new PhotonVision();
 
@@ -49,6 +47,7 @@ public class PhotonVision implements Sendable {
       builder.addDoubleProperty("Pitch", target::getPitch, null);
       builder.addDoubleProperty("Area", target::getArea, null);
       builder.addDoubleProperty("Skew", target::getSkew, null);
+      builder.addIntegerProperty("Tag ID", target::getFiducialId, null);
     };
   }
 
