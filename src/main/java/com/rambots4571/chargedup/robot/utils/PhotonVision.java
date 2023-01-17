@@ -4,11 +4,8 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.List;
-
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -46,11 +43,19 @@ public class PhotonVision implements Sendable {
     return result.getBestTarget();
   }
 
-
+  public Sendable getSendable(PhotonTrackedTarget target) {
+    return builder -> {
+      builder.addDoubleProperty("Yaw", target::getYaw, null);
+      builder.addDoubleProperty("Pitch", target::getPitch, null);
+      builder.addDoubleProperty("Area", target::getArea, null);
+      builder.addDoubleProperty("Skew", target::getSkew, null);
+    };
+  }
 
   @Override
   public void initSendable(SendableBuilder builder) {
     builder.setSmartDashboardType("PhotonVision Values");
     builder.addBooleanProperty("Has Valid Targets", this::hasValidTarget, null);
+    getSendable(getBestTarget()).initSendable(builder);
   }
 }
