@@ -19,6 +19,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -47,6 +48,9 @@ public class DriveTrain extends SubsystemBase {
     m_gyro = new Pigeon2(DriveConstants.PIGEON_IMU_2);
     m_gyro.configFactoryDefault();
     zeroGyro();
+
+    Timer.delay(1.0);
+    resetModulesToAbsolute();
 
     m_Odometry =
         new SwerveDriveOdometry(
@@ -101,6 +105,12 @@ public class DriveTrain extends SubsystemBase {
       states[mod.moduleNumber] = mod.getPosition();
     }
     return states;
+  }
+
+  public void resetModulesToAbsolute() {
+    for (SwerveModule mod : modules) {
+      mod.resetToAbsolute();
+    }
   }
 
   // *****************************************
