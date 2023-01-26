@@ -35,7 +35,7 @@ public class SwerveDriveCommand extends CommandBase {
         double rotationVal = MathUtil.applyDeadband(rotationSupplier.getAsDouble(), Settings.STICK_DEADBAND);
 
         driveTrain.drive(new Translation2d(translationVal, strafeVal).times(DriveConstants.kMaxSpeedMetersPerSecond), 
-            (rotationVal * DriveConstants.kMaxAngularSpeedMetersPerSecond), !robotCentricSupplier.getAsBoolean(), true);
+            (rotationVal * DriveConstants.kMaxAngularSpeedMetersPerSecond), robotCentricSupplier.getAsBoolean(), true);
     }
 
 }
