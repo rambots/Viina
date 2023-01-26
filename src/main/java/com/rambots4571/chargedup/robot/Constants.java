@@ -15,11 +15,14 @@ import com.rambots4571.rampage.swerve.SwerveModuleConstants;
 import com.rambots4571.rampage.telemetry.Alert;
 import com.rambots4571.rampage.telemetry.Alert.AlertType;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -34,41 +37,41 @@ public final class Constants {
     ///////////////// CAN IDs /////////////////
 
     /* Front Left Module - Module 0 */
-    public static final class Mod0 { // TODO: This must be tuned to specific robot
+    public static final class Mod0 { // TODO: Get precise angleOffset
       public static final int driveMotorID = 2;
       public static final int angleMotorID = 3;
       public static final int canCoderID = 4;
-      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.0);
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(174);
       public static final SwerveModuleConstants constants =
           new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
 
     /* Front Right Module - Module 1 */
-    public static final class Mod1 { // TODO: This must be tuned to specific robot
+    public static final class Mod1 { // TODO: Get precise angleOffset
       public static final int driveMotorID = 5;
       public static final int angleMotorID = 6;
       public static final int canCoderID = 7;
-      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.0);
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(200);
       public static final SwerveModuleConstants constants =
           new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
 
     /* Back Left Module - Module 2 */
-    public static final class Mod2 { // TODO: This must be tuned to specific robot
+    public static final class Mod2 { // TODO: Get precise angleOffset
       public static final int driveMotorID = 8;
       public static final int angleMotorID = 9;
       public static final int canCoderID = 10;
-      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.0);
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(52);
       public static final SwerveModuleConstants constants =
           new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
 
     /* Back Right Module - Module 3 */
-    public static final class Mod3 { // TODO: This must be tuned to specific robot
+    public static final class Mod3 { // TODO: Get precise angleOffset
       public static final int driveMotorID = 11;
       public static final int angleMotorID = 12;
       public static final int canCoderID = 13;
-      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.0);
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(348);
       public static final SwerveModuleConstants constants =
           new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
@@ -102,8 +105,8 @@ public final class Constants {
     public static final double drivePeakCurrentDuration = 0.1;
     public static final boolean driveEnableCurrentLimit = true;
 
-    public static final double kTrackWidthMeters = 0.42;
-    public static final double kWheelBaseMeters = 0.73;
+    public static final double kTrackWidthMeters = Units.inchesToMeters(21.75);
+    public static final double kWheelBaseMeters = Units.inchesToMeters(21.75);
     public static final double kWheelCircumference = chosenModule.getCircumference();
 
     public static final double kDriveGearRatio = chosenModule.getDriveGearRatio();
@@ -127,20 +130,20 @@ public final class Constants {
             new Translation2d(-kTrackWidthMeters / 2.0, -kWheelBaseMeters / 2.0));
 
     ///////////////// CONTROL CHARACTERISTICS /////////////////
-    public static final double angleKP = chosenModule.getAngleKP();
+    public static final double angleKP = 0.06;
     public static final double angleKI = chosenModule.getAngleKI();
     public static final double angleKD = chosenModule.getAngleKD();
     public static final double angleKF = chosenModule.getAngleKF();
 
-    public static final double driveKP = 0.05; // TODO: Tune this
+    public static final double driveKP = 0.005; // TODO: Tune this
     public static final double driveKI = 0.0;
     public static final double driveKD = 0.0;
     public static final double driveKF = 0.0;
 
     // Divide SysId results by 12 to convert from volts to CTRE percentOutput
-    public static final double kS = (0.22 / 12.0);
-    public static final double kV = (1.98 / 12.0);
-    public static final double kA = (0.2 / 12.0);
+    public static final double kS = (0.32 / 12);
+    public static final double kV = (1.51 / 12);
+    public static final double kA = (0.27 / 12);
 
     public static final double openLoopRamp = 0.25;
     public static final double closedLoopRamp = 0.0;
@@ -214,6 +217,12 @@ public final class Constants {
     public static final int strafeAxis = Gamepad.Axis.LeftXAxis.getNumber();
     public static final int rotationAxis = Gamepad.Axis.RightXAxis.getNumber();
     public static final int dabub = XboxController.Axis.kLeftY.value;
+
+    ///////////////// PHOTONVISION /////////////////
+
+    public static final double CAMERA_HEIGHT_METERS = 0.5;
+    public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(90);
+    public static final double TARGET_HEIGHT_METERS = 0.5;
 
     ///////////////// AUTON /////////////////
 
