@@ -9,7 +9,7 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.rambots4571.chargedup.robot.Constants.AutoPaths;
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Constants.Settings;
-import com.rambots4571.chargedup.robot.commands.SwerveDriveCommand;
+import com.rambots4571.chargedup.robot.commands.Drive.SwerveDriveCommand;
 import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
 import com.rambots4571.rampage.joystick.Controller;
 import com.rambots4571.rampage.joystick.Gamepad;
