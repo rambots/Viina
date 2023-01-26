@@ -37,6 +37,10 @@ public class DriveTrain extends SubsystemBase {
   }
 
   private DriveTrain() {
+    m_gyro = new Pigeon2(DriveConstants.PIGEON_IMU_2);
+    m_gyro.configFactoryDefault();
+    zeroGyro();
+
     modules =
         new SwerveModule[] {
           new SwerveModule(0, DriveConstants.Mod0.constants),
@@ -44,10 +48,6 @@ public class DriveTrain extends SubsystemBase {
           new SwerveModule(2, DriveConstants.Mod2.constants),
           new SwerveModule(3, DriveConstants.Mod3.constants)
         };
-
-    m_gyro = new Pigeon2(DriveConstants.PIGEON_IMU_2);
-    m_gyro.configFactoryDefault();
-    zeroGyro();
 
     Timer.delay(1.0);
     resetModulesToAbsolute();
