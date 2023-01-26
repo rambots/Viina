@@ -6,7 +6,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
-import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.chargedup.robot.Robot;
 import com.rambots4571.rampage.math.Converter;
 import com.rambots4571.rampage.swerve.CTREModuleState;
@@ -135,7 +134,7 @@ public class SwerveModule {
 
   private void configDriveMotor() {
     driveMotor.configFactoryDefault();
-    driveMotor.configAllSettings(Robot.configs.driveFXConfig, Settings.timeoutMs);
+    driveMotor.configAllSettings(Robot.configs.driveFXConfig);
     driveMotor.setInverted(DriveConstants.driveMotorInvert);
     driveMotor.setNeutralMode(DriveConstants.driveNeutralMode);
     driveMotor.setSelectedSensorPosition(0);
@@ -143,7 +142,7 @@ public class SwerveModule {
 
   private void configTurnMotor() {
     turnMotor.configFactoryDefault();
-    turnMotor.configAllSettings(Robot.configs.turnFXConfig, Settings.timeoutMs);
+    turnMotor.configAllSettings(Robot.configs.turnFXConfig);
     turnMotor.setInverted(DriveConstants.turnMotorInvert);
     turnMotor.setNeutralMode(DriveConstants.angleNeutralMode);
     resetToAbsolute();
@@ -151,7 +150,6 @@ public class SwerveModule {
 
   private void configAngleEncoder() {
     angleEncoder.configFactoryDefault();
-    angleEncoder.configAllSettings(Robot.configs.canCoderConfig, Settings.timeoutMs);
-    angleEncoder.configSensorDirection(DriveConstants.canCoderInvert);
+    angleEncoder.configAllSettings(Robot.configs.canCoderConfig);
   }
 }

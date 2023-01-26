@@ -17,9 +17,8 @@ public class CTREConfigs {
   public SupplyCurrentLimitConfiguration angleCurrentLimit, driveCurrentLimit;
 
   public CTREConfigs() {
-    // TODO: Potential Null Pointer Error Location
-    driveFXConfig = new TalonFXConfiguration();
     turnFXConfig = new TalonFXConfiguration();
+    driveFXConfig = new TalonFXConfiguration();
 
     canCoderConfig = new CANCoderConfiguration();
 
