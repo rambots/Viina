@@ -5,6 +5,9 @@
 package com.rambots4571.chargedup.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
@@ -15,8 +18,6 @@ import com.rambots4571.rampage.swerve.SwerveModuleConstants;
 import com.rambots4571.rampage.telemetry.Alert;
 import com.rambots4571.rampage.telemetry.Alert.AlertType;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -153,6 +154,35 @@ public final class Constants {
     public static final PIDConstants tranlationPID = new PIDConstants(driveKP, driveKI, driveKD);
 
     public static final PIDConstants rotationPID = new PIDConstants(angleKP, angleKI, angleKD);
+  }
+
+  public static final class Cvator {
+    public static final int BASE_MOTOR_MASTER = 7;
+    public static final int BASE_MOTOR_FOLLOWER = 8;
+
+    public static final int LIMITSWITCH = 0;
+
+    public static final double rampRate = 0.15;
+
+    public static final NeutralMode MODE = NeutralMode.Brake;
+
+    public static final TalonFXInvertType masterInvert = TalonFXInvertType.Clockwise;
+    public static final TalonFXInvertType followerInvert = TalonFXInvertType.CounterClockwise;
+
+    public static final StatorCurrentLimitConfiguration statorLimit =
+        new StatorCurrentLimitConfiguration(true, 40, 70, 2);
+
+    public static final SupplyCurrentLimitConfiguration supplyLimit =
+        new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
+
+    // TODO: Find and tune real values
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double kF = 0;
+
+    public static final double cruiseVel = 0;
+    public static final double motionAccel = 0;
   }
 
   public static class Settings {
