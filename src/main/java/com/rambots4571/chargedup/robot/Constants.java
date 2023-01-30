@@ -182,8 +182,8 @@ public final class Constants {
     public static final double kD = 0;
     public static final double kF = 0;
 
-    public static final double cruiseVel = 0;
-    public static final double motionAccel = 0;
+    public static final double cruiseVel = 0; // u/100_ms
+    public static final double motionAccel = 0; // u/100_ms/s
 
     // TODO: add real heights
     public static enum Height implements DoubleSupplier {

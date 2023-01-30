@@ -10,7 +10,9 @@ import com.rambots4571.chargedup.robot.Constants.AutoPaths;
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.chargedup.robot.commands.drive.SwerveDriveCommand;
+import com.rambots4571.chargedup.robot.commands.elevator.TestElevatorCommand;
 import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
+import com.rambots4571.chargedup.robot.subsystems.Elevator;
 import com.rambots4571.rampage.joystick.Controller;
 import com.rambots4571.rampage.joystick.Gamepad;
 import com.rambots4571.rampage.joystick.Gamepad.Button;
@@ -38,6 +40,7 @@ public class RobotContainer {
 
   // Commands
   private final SwerveDriveCommand swerveDriveCommand;
+  private final TestElevatorCommand testElevatorCommand;
 
   public RobotContainer() {
     driveTrain = DriveTrain.getInstance();
@@ -70,6 +73,13 @@ public class RobotContainer {
     autonChooser.addOption("2 Cargo Bottom", TwoCargoBot);
 
     SmartDashboard.putData("Auton Chooser", autonChooser);
+
+    testElevatorCommand =
+        new TestElevatorCommand(
+            Elevator.getInstance(), () -> driverController.getAxisValue(Gamepad.Axis.RightYAxis));
+
+    // TODO: uncomment to test elevator
+    // Elevator.getInstance().setDefaultCommand(testElevatorCommand);
 
     configureBindings();
 

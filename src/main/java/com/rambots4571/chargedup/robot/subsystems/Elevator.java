@@ -101,4 +101,8 @@ public class Elevator extends SubsystemBase {
   public double getRawEncoderPosition() {
     return baseMotorController.getRaw();
   }
+
+  public double getRawSpeed() {
+    return baseMotorMaster.getSelectedSensorVelocity();
+  }
 }
