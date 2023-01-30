@@ -36,7 +36,7 @@ public class DriveTrain extends SubsystemBase {
     return instance;
   }
 
-  private DriveTrain() {
+  public DriveTrain() {
     m_gyro = new Pigeon2(DriveConstants.PIGEON_IMU_2);
     m_gyro.configFactoryDefault();
     zeroGyro();

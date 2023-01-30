@@ -26,6 +26,7 @@ public class RobotContainer {
   // Misceallaneous
   public final Controller<Gamepad.Button, Gamepad.Axis> driverController =
       Gamepad.make(Settings.DRIVERCONTROLLER);
+
   public final Trigger robotCentricToggle = new Trigger(driverController.getButton(Button.Y));
 
   public final SendableChooser<Command> autonChooser = new SendableChooser<>();
