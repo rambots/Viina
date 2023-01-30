@@ -5,6 +5,7 @@
 package com.rambots4571.chargedup.robot;
 
 import com.rambots4571.chargedup.robot.Constants.Settings;
+import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
 import com.rambots4571.chargedup.robot.utils.CTREConfigs;
 import com.rambots4571.rampage.telemetry.Alert;
 import com.rambots4571.rampage.telemetry.Alert.AlertType;
@@ -36,8 +37,10 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
  */
 public class Robot extends LoggedRobot {
   private RobotContainer container;
-  public static CTREConfigs configs;
   private Command autoCommand;
+
+  public static CTREConfigs configs;
+  public static DriveTrain driveTrain;
 
   private Logger logger;
   private double autoStart;
@@ -57,6 +60,8 @@ public class Robot extends LoggedRobot {
     configs = new CTREConfigs();
 
     container = new RobotContainer();
+
+    driveTrain = new DriveTrain();
 
     // Advantage Kit Setup
     logger = Logger.getInstance();
@@ -180,6 +185,8 @@ public class Robot extends LoggedRobot {
     if (autoCommand != null) {
       autoCommand.schedule();
     }
+
+    driveTrain.resetModulesToAbsolute();
   }
 
   /** This function is called periodically during autonomous. */
@@ -188,13 +195,12 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
+
     if (autoCommand != null) {
       autoCommand.cancel();
     }
+
+    driveTrain.resetModulesToAbsolute();
   }
 
   /** This function is called periodically during operator control. */
