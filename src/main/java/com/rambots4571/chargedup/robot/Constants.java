@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.DoubleSupplier;
 
 public final class Constants {
 
@@ -183,6 +184,27 @@ public final class Constants {
 
     public static final double cruiseVel = 0;
     public static final double motionAccel = 0;
+
+    // TODO: add real heights
+    public static enum Height implements DoubleSupplier {
+      CUBE_BOTTON(0.0),
+      CUBE_MIDDLE(0.0),
+      CUBE_TOP(0.0),
+      CONE_BOTTOM(0.0),
+      CONE_MIDDLE(0.0),
+      CONE_TOP(0.0);
+
+      private double height;
+
+      Height(double height) {
+        this.height = height;
+      }
+
+      @Override
+      public double getAsDouble() {
+        return height;
+      }
+    }
   }
 
   public static class Settings {
