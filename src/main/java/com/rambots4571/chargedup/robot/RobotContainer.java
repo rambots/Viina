@@ -48,9 +48,9 @@ public class RobotContainer {
     swerveDriveCommand =
         new SwerveDriveCommand(
             driveTrain,
-            () -> -driverController.getRawAxis(Settings.translationAxis),
-            () -> -driverController.getRawAxis(Settings.strafeAxis),
-            () -> -driverController.getRawAxis(Settings.rotationAxis),
+            () -> -driverController.getAxisValue(Gamepad.Axis.LeftYAxis),
+            () -> -driverController.getAxisValue(Gamepad.Axis.LeftXAxis),
+            () -> -driverController.getAxisValue(Gamepad.Axis.RightXAxis),
             () -> robotCentricToggle.getAsBoolean());
 
     driveTrain.setDefaultCommand(swerveDriveCommand);

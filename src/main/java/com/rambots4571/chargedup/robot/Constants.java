@@ -262,13 +262,7 @@ public final class Constants {
     ///////////////// JOYSTICKS /////////////////
 
     public static final int DRIVERCONTROLLER = 3;
-
     public static final double STICK_DEADBAND = 0.1;
-
-    public static final int translationAxis = Gamepad.Axis.LeftYAxis.getNumber();
-    public static final int strafeAxis = Gamepad.Axis.LeftXAxis.getNumber();
-    public static final int rotationAxis = Gamepad.Axis.RightXAxis.getNumber();
-    public static final int dabub = XboxController.Axis.kLeftY.value;
 
     ///////////////// PHOTONVISION /////////////////
 
