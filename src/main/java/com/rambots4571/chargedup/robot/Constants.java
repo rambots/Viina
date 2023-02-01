@@ -12,7 +12,6 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 
-import com.rambots4571.rampage.joystick.Gamepad;
 import com.rambots4571.rampage.swerve.COTSFalconSwerveConstants;
 import com.rambots4571.rampage.swerve.SwerveModuleConstants;
 import com.rambots4571.rampage.telemetry.Alert;
@@ -25,7 +24,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import java.util.HashMap;
@@ -269,6 +267,7 @@ public final class Constants {
     public static final double CAMERA_HEIGHT_METERS = 0.5;
     public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(90);
     public static final double TARGET_HEIGHT_METERS = 0.5;
+    public static final double GOAL_RANGE_METERS = Units.inchesToMeters(6);
 
     ///////////////// AUTON /////////////////
 
