@@ -106,6 +106,11 @@ public class SwerveModule {
         getAngle());
   }
 
+  public void stopMotors() {
+    turnMotor.set(ControlMode.PercentOutput, 0);
+    driveMotor.set(ControlMode.PercentOutput, 0);
+  }
+
   // *****************************************
   // ************* ANGLE STUFF ***************
   // *****************************************

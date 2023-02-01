@@ -113,6 +113,12 @@ public class DriveTrain extends SubsystemBase {
     }
   }
 
+  public void stopMotors() {
+    for (SwerveModule mod : modules) {
+      mod.stopMotors();
+    }
+  }
+
   // *****************************************
   // ************* Robot Angle ***************
   // *****************************************
