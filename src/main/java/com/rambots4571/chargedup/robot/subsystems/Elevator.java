@@ -48,6 +48,8 @@ public class Elevator extends SubsystemBase {
     baseMotorMaster.setInverted(Cvator.masterInvert);
     baseMotorFollower.setInverted(Cvator.followerInvert);
 
+    configMotionMagic();
+
     baseMotorFollower.follow(baseMotorMaster);
 
     baseMotorController = new TalonPID(baseMotorMaster);
