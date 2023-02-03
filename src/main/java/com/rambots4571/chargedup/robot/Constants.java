@@ -185,7 +185,7 @@ public final class Constants {
 
     // TODO: add real heights
     public static enum Height implements DoubleSupplier {
-      CUBE_BOTTON(0.0),
+      CUBE_BOTTOM(0.0),
       CUBE_MIDDLE(0.0),
       CUBE_TOP(0.0),
       CONE_BOTTOM(0.0),
@@ -202,6 +202,11 @@ public final class Constants {
       public double getAsDouble() {
         return height;
       }
+    }
+
+    public static enum PositionMode {
+      CONE,
+      CUBE
     }
   }
 

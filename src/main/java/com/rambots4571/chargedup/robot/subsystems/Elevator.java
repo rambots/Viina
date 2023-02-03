@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import com.rambots4571.chargedup.robot.Constants.Cvator;
+import com.rambots4571.chargedup.robot.Constants.Cvator.Height;
+import com.rambots4571.chargedup.robot.Constants.Cvator.PositionMode;
 import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.rampage.motor.TalonPID;
 
@@ -18,10 +20,11 @@ import java.util.function.DoubleSupplier;
 public class Elevator extends SubsystemBase {
 
   private final WPI_TalonFX baseMotorMaster, baseMotorFollower;
+  private final TalonPID baseMotorController;
 
   private final DigitalInput limitSwitch;
 
-  private final TalonPID baseMotorController;
+  private final Position position;
 
   private static Elevator instance = new Elevator();
 
@@ -58,6 +61,8 @@ public class Elevator extends SubsystemBase {
     addChild("BaseMotor PID", baseMotorController.getTuner());
 
     limitSwitch = new DigitalInput(Cvator.LIMITSWITCH);
+
+    position = new Position(PositionMode.CUBE, Height.CUBE_BOTTOM);
   }
 
   public void configMotionMagic() {
@@ -106,5 +111,27 @@ public class Elevator extends SubsystemBase {
 
   public double getRawSpeed() {
     return baseMotorMaster.getSelectedSensorVelocity();
+  }
+
+  public void togglePositionMode() {
+    position.mode = position.mode == PositionMode.CONE ? PositionMode.CUBE : PositionMode.CONE;
+  }
+
+  public static class Position {
+    private PositionMode mode;
+    private Height height;
+
+    public Position(PositionMode mode, Height height) {
+      this.mode = mode;
+      this.height = height;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof Position)) return false;
+      Position position = (Position) o;
+      return mode == position.mode && height == position.height;
+    }
   }
 }
