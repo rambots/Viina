@@ -7,15 +7,18 @@ package com.rambots4571.chargedup.robot;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import com.rambots4571.chargedup.robot.Constants.AutoPaths;
+import com.rambots4571.chargedup.robot.Constants.Cvator;
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.chargedup.robot.commands.drive.SwerveDriveCommand;
 import com.rambots4571.chargedup.robot.commands.elevator.TestElevatorCommand;
 import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
 import com.rambots4571.chargedup.robot.subsystems.Elevator;
+import com.rambots4571.rampage.command.RunEndCommand;
 import com.rambots4571.rampage.joystick.Controller;
 import com.rambots4571.rampage.joystick.Gamepad;
 import com.rambots4571.rampage.joystick.Gamepad.Button;
+import com.rambots4571.rampage.joystick.component.DPadButton.Direction;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,6 +40,7 @@ public class RobotContainer {
 
   // Subsytems
   private final DriveTrain driveTrain;
+  private final Elevator elevator;
 
   // Commands
   private final SwerveDriveCommand swerveDriveCommand;
@@ -44,6 +48,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     driveTrain = DriveTrain.getInstance();
+    elevator = Elevator.getInstance();
 
     swerveDriveCommand =
         new SwerveDriveCommand(
@@ -92,6 +97,18 @@ public class RobotContainer {
     // (DriverController) Y -> Rest Gyro
 
     driverController.getButton(Button.Y).onTrue(zeroGyro());
+
+    driverController
+        .getDPadButton(Direction.RIGHT)
+        .whileTrue(
+            new RunEndCommand(
+                () -> {
+                  elevator.setHeight(Cvator.Height.CUBE_MIDDLE);
+                },
+                () -> {
+                  elevator.stopMotors();
+                },
+                elevator));
   }
 
   public Command getAutonomousCommand() {
