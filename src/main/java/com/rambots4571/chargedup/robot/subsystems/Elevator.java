@@ -9,13 +9,17 @@ import com.rambots4571.chargedup.robot.Constants.Cvator;
 import com.rambots4571.chargedup.robot.Constants.Cvator.Height;
 import com.rambots4571.chargedup.robot.Constants.Cvator.PositionMode;
 import com.rambots4571.chargedup.robot.Constants.Settings;
+import com.rambots4571.chargedup.robot.utils.LinkedList;
+import com.rambots4571.chargedup.robot.utils.LinkedList.Node;
 import com.rambots4571.rampage.motor.TalonPID;
 
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.Arrays;
 import java.util.function.DoubleSupplier;
+import java.util.function.Function;
 
 public class Elevator extends SubsystemBase {
 
@@ -24,7 +28,13 @@ public class Elevator extends SubsystemBase {
 
   private final DigitalInput limitSwitch;
 
-  private final Position position;
+  private final LinkedList<Pair<Height, Height>> heights = new LinkedList<>();
+  private Node<Pair<Height, Height>> currNode;
+
+  private PositionMode mode = PositionMode.CONE;
+
+  private Function<Node<Pair<Height, Height>>, Height> getHeight =
+      node -> node.getItem().getFirst();
 
   private static Elevator instance = new Elevator();
 
@@ -62,7 +72,18 @@ public class Elevator extends SubsystemBase {
 
     limitSwitch = new DigitalInput(Cvator.LIMITSWITCH);
 
-    position = new Position(PositionMode.CUBE, Height.CUBE_BOTTOM);
+    addHeights();
+    currNode = heights.getFirst();
+  }
+
+  private void addHeightPair(Height cone, Height cube) {
+    heights.add(new Pair<Height, Height>(cone, cube));
+  }
+
+  private void addHeights() {
+    addHeightPair(Height.CONE_BOTTOM, Height.CUBE_BOTTOM);
+    addHeightPair(Height.CONE_MIDDLE, Height.CUBE_MIDDLE);
+    addHeightPair(Height.CONE_TOP, Height.CUBE_TOP);
   }
 
   public void configMotionMagic() {
@@ -89,6 +110,36 @@ public class Elevator extends SubsystemBase {
     return !limitSwitch.get();
   }
 
+  public void togglePositionMode() {
+    if (mode == PositionMode.CONE) {
+      getHeight = node -> node.getItem().getSecond();
+      mode = PositionMode.CUBE;
+    } else {
+      getHeight = node -> node.getItem().getFirst();
+      mode = PositionMode.CONE;
+    }
+  }
+
+  public void stepUp() {
+    if (currNode.getNext() != null) {
+      currNode = currNode.getNext();
+    }
+  }
+
+  public void stepDown() {
+    if (currNode.getPrev() != null) {
+      currNode = currNode.getPrev();
+    }
+  }
+
+  public void bottomHeight() {
+    currNode = heights.getFirst();
+  }
+
+  public void topHeight() {
+    currNode = heights.getLast();
+  }
+
   public void setBaseMotor(double speed) {
     if (isLimitSwitchPressed() && speed < 0) {
       stopMotors();
@@ -101,6 +152,10 @@ public class Elevator extends SubsystemBase {
     baseMotorMaster.set(0);
   }
 
+  public void setCurrentPosition() {
+    setHeight(getHeight.apply(currNode));
+  }
+
   public void setHeight(DoubleSupplier height) {
     baseMotorMaster.set(ControlMode.MotionMagic, height.getAsDouble());
   }
@@ -111,27 +166,5 @@ public class Elevator extends SubsystemBase {
 
   public double getRawSpeed() {
     return baseMotorMaster.getSelectedSensorVelocity();
-  }
-
-  public void togglePositionMode() {
-    position.mode = position.mode == PositionMode.CONE ? PositionMode.CUBE : PositionMode.CONE;
-  }
-
-  public static class Position {
-    private PositionMode mode;
-    private Height height;
-
-    public Position(PositionMode mode, Height height) {
-      this.mode = mode;
-      this.height = height;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-      if (this == o) return true;
-      if (!(o instanceof Position)) return false;
-      Position position = (Position) o;
-      return mode == position.mode && height == position.height;
-    }
   }
 }
