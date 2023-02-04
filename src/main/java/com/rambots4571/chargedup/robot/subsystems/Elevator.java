@@ -167,4 +167,9 @@ public class Elevator extends SubsystemBase {
   public double getRawSpeed() {
     return baseMotorMaster.getSelectedSensorVelocity();
   }
+
+  @Override
+  public void periodic() {
+    setCurrentPosition();
+  }
 }
