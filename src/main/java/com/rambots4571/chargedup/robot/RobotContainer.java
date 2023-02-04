@@ -94,21 +94,21 @@ public class RobotContainer {
   private void setEventMap() {}
 
   private void configureBindings() {
-    // (DriverController) Y -> Rest Gyro
-
+    // (Driver) Y -> Reset Gyro
     driverController.getButton(Button.Y).onTrue(zeroGyro());
 
-    driverController
-        .getDPadButton(Direction.RIGHT)
-        .whileTrue(
-            new RunEndCommand(
-                () -> {
-                  elevator.setHeight(Cvator.Height.CUBE_MIDDLE);
-                },
-                () -> {
-                  elevator.stopMotors();
-                },
-                elevator));
+    // (Driver) Left DPad -> Switch Pos Mode
+    driverController.getDPadButton(Direction.LEFT).onTrue(togglePositionMode());
+
+    // (Driver) Top DPad -> Iterate Forward
+    driverController.getDPadButton(Direction.UP).onTrue(stepUp());
+
+    // (Driver) Bottom DPad -> Iterate Backward
+    driverController.getDPadButton(Direction.DOWN).onTrue(stepDown());
+
+    // (Driver) Right DPad -> Set Height
+    driverController.getDPadButton(Direction.RIGHT).onTrue(setCurrentPosition());
+
   }
 
   public Command getAutonomousCommand() {
@@ -118,5 +118,21 @@ public class RobotContainer {
 
   private Command zeroGyro() {
     return new InstantCommand(driveTrain::zeroGyro, driveTrain);
+  }
+
+  private Command togglePositionMode() {
+    return new InstantCommand(elevator::togglePositionMode, elevator);
+  }
+
+  private Command stepUp() {
+    return new InstantCommand(elevator::stepUp, elevator);
+  }
+
+  private Command stepDown() {
+    return new InstantCommand(elevator::stepDown, elevator);
+  }
+
+  private Command setCurrentPosition() {
+    return new InstantCommand(elevator::setCurrentPosition, elevator);
   }
 }
