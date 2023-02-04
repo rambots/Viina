@@ -7,7 +7,6 @@ package com.rambots4571.chargedup.robot;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import com.rambots4571.chargedup.robot.Constants.AutoPaths;
-import com.rambots4571.chargedup.robot.Constants.Cvator;
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.chargedup.robot.commands.drive.SwerveDriveCommand;
@@ -107,8 +106,17 @@ public class RobotContainer {
     driverController.getDPadButton(Direction.DOWN).onTrue(stepDown());
 
     // (Driver) Right DPad -> Set Height
-    driverController.getDPadButton(Direction.RIGHT).onTrue(setCurrentPosition());
-
+    driverController
+        .getDPadButton(Direction.RIGHT)
+        .whileTrue(
+            new RunEndCommand(
+                () -> {
+                  elevator.setCurrentPosition();
+                },
+                () -> {
+                  elevator.stopMotors();
+                },
+                elevator));
   }
 
   public Command getAutonomousCommand() {
@@ -130,9 +138,5 @@ public class RobotContainer {
 
   private Command stepDown() {
     return new InstantCommand(elevator::stepDown, elevator);
-  }
-
-  private Command setCurrentPosition() {
-    return new InstantCommand(elevator::setCurrentPosition, elevator);
   }
 }
