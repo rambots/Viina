@@ -9,9 +9,9 @@ import com.rambots4571.chargedup.robot.Constants.Cvator;
 import com.rambots4571.chargedup.robot.Constants.Cvator.Height;
 import com.rambots4571.chargedup.robot.Constants.Cvator.PositionMode;
 import com.rambots4571.chargedup.robot.Constants.Settings;
-import com.rambots4571.chargedup.robot.utils.LinkedList;
-import com.rambots4571.chargedup.robot.utils.LinkedList.Node;
 import com.rambots4571.rampage.motor.TalonPID;
+import com.rambots4571.rampage.util.LinkedList;
+import com.rambots4571.rampage.util.LinkedList.Node;
 
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj.DigitalInput;

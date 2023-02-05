@@ -64,7 +64,7 @@ dependencies {
     implementation wpi.java.deps.wpilib()
     implementation wpi.java.vendor.java()
 
-    implementation 'com.github.rambots:rampage:v2023.1.4'
+    implementation 'com.github.rambots:rampage:v2023.1.5'
 
     compileOnly 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
