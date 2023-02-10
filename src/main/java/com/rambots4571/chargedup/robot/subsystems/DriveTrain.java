@@ -127,6 +127,10 @@ public class DriveTrain extends SubsystemBase {
     return m_gyro.getYaw() % 360;
   }
 
+  public double getGyroPitch() {
+    return m_gyro.getPitch();
+  }
+
   public Rotation2d getRotation2d() {
     return (DriveConstants.invertGyro)
         ? Rotation2d.fromDegrees(360 - m_gyro.getYaw())
