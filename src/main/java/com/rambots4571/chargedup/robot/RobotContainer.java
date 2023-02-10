@@ -9,6 +9,7 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.rambots4571.chargedup.robot.Constants.AutoPaths;
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Constants.Settings;
+import com.rambots4571.chargedup.robot.commands.drive.BalanceOnBeam;
 import com.rambots4571.chargedup.robot.commands.drive.SwerveDriveCommand;
 import com.rambots4571.chargedup.robot.commands.elevator.TestElevatorCommand;
 import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
@@ -44,6 +45,7 @@ public class RobotContainer {
   // Commands
   private final SwerveDriveCommand swerveDriveCommand;
   private final TestElevatorCommand testElevatorCommand;
+  private final BalanceOnBeam balanceOnBeam;
 
   public RobotContainer() {
     driveTrain = DriveTrain.getInstance();
@@ -56,6 +58,8 @@ public class RobotContainer {
             () -> -driverController.getAxisValue(Gamepad.Axis.LeftXAxis),
             () -> -driverController.getAxisValue(Gamepad.Axis.RightXAxis),
             () -> robotCentricToggle.getAsBoolean());
+    
+    balanceOnBeam = new BalanceOnBeam(driveTrain);
 
     driveTrain.setDefaultCommand(swerveDriveCommand);
 
@@ -117,6 +121,9 @@ public class RobotContainer {
                   elevator.stopMotors();
                 },
                 elevator));
+
+    // (Driver) Right Bumper -> Balance on Beam
+    driverController.getButton(Button.RightBumper).whileTrue(balanceOnBeam);
   }
 
   public Command getAutonomousCommand() {
