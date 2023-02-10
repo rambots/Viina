@@ -211,6 +211,7 @@ public final class Constants {
   }
 
   public static class Settings {
+    public static final double BALANCE_BEAM_DEGREES_GOAL = 0.0;
     public static final int timeoutMs = 10;
 
     ///////////////// ADVANTAGE KIT LOGGING /////////////////
