@@ -17,7 +17,7 @@ import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.function.DoubleSupplier;
 import java.util.function.Function;
 
@@ -46,7 +46,7 @@ public class Elevator extends SubsystemBase {
     baseMotorMaster = new WPI_TalonFX(Cvator.BASE_MOTOR_MASTER);
     baseMotorFollower = new WPI_TalonFX(Cvator.BASE_MOTOR_FOLLOWER);
 
-    Arrays.asList(baseMotorMaster, baseMotorFollower)
+    List.of(baseMotorMaster, baseMotorFollower)
         .forEach(
             motor -> {
               motor.configFactoryDefault();
