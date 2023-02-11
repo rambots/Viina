@@ -15,10 +15,9 @@ import com.rambots4571.chargedup.robot.commands.elevator.TestElevatorCommand;
 import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
 import com.rambots4571.chargedup.robot.subsystems.Elevator;
 import com.rambots4571.rampage.command.RunEndCommand;
-import com.rambots4571.rampage.joystick.Controller;
-import com.rambots4571.rampage.joystick.Gamepad;
-import com.rambots4571.rampage.joystick.Gamepad.Button;
-import com.rambots4571.rampage.joystick.component.DPadButton.Direction;
+import com.rambots4571.rampage.controller.Gamepad;
+import com.rambots4571.rampage.controller.Gamepad.Button;
+import com.rambots4571.rampage.controller.component.DPadButton.Direction;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,10 +28,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 
   // Misceallaneous
-  public final Controller<Gamepad.Button, Gamepad.Axis> driverController =
-      Gamepad.make(Settings.DRIVERCONTROLLER);
+  public final Gamepad driverController = new Gamepad(Settings.DRIVERCONTROLLER);
 
-  public final Trigger robotCentricToggle = new Trigger(driverController.getButton(Button.Y));
+  public final Trigger robotCentricToggle = driverController.getButton(Button.Y);
 
   public final SendableChooser<Command> autonChooser = new SendableChooser<>();
 
@@ -58,7 +56,7 @@ public class RobotContainer {
             () -> -driverController.getAxisValue(Gamepad.Axis.LeftXAxis),
             () -> -driverController.getAxisValue(Gamepad.Axis.RightXAxis),
             () -> robotCentricToggle.getAsBoolean());
-    
+
     balanceOnBeam = new BalanceOnBeam(driveTrain);
 
     driveTrain.setDefaultCommand(swerveDriveCommand);
