@@ -19,13 +19,12 @@ import com.rambots4571.rampage.controller.Gamepad;
 import com.rambots4571.rampage.controller.Gamepad.Button;
 import com.rambots4571.rampage.controller.component.DPadButton.Direction;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
@@ -165,23 +164,6 @@ public class RobotContainer {
   }
 
   private Command runAferSomeTime(Runnable func, double seconds, SubsystemBase subsytem) {
-    Timer timer = new Timer();
-    Command command =
-        new FunctionalCommand(
-            // init
-            () -> {
-              timer.reset();
-              timer.start();
-            },
-            // exec (do nothing)
-            () -> {},
-            // end (if canceled don't run)
-            interrupt -> {
-              if (!interrupt) func.run();
-            },
-            // isFinish
-            () -> timer.hasElapsed(seconds),
-            subsytem);
-    return command;
+    return new WaitCommand(seconds).andThen(func, subsytem);
   }
 }
