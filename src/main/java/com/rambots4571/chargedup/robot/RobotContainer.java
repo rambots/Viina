@@ -104,17 +104,19 @@ public class RobotContainer {
     // (Driver) Left DPad -> Switch Pos Mode
     driverController.getDPadButton(Direction.LEFT).onTrue(togglePositionMode());
 
-    // (Driver) Top DPad -> Iterate Forward (Pressed)
-    driverController.getDPadButton(Direction.UP).onTrue(stepUp());
+    driverController
+        .getDPadButton(Direction.UP)
+        // (Driver) Top DPad -> Iterate Forward (Pressed)
+        .onTrue(stepUp())
+        // (Driver) Top DPad -> goto max height (Held)
+        .whileTrue(topHeight());
 
-    // (Driver) Top DPad -> goto max height (Held)
-    driverController.getDPadButton(Direction.UP).whileTrue(topHeight());
-
-    // (Driver) Bottom DPad -> Iterate Backward (Pressed)
-    driverController.getDPadButton(Direction.DOWN).onTrue(stepDown());
-
-    // (Driver) Bottom DPad -> goto min height (Held)
-    driverController.getDPadButton(Direction.DOWN).whileTrue(bottomHeight());
+    driverController
+        .getDPadButton(Direction.DOWN)
+        // (Driver) Bottom DPad -> Iterate Backward (Pressed)
+        .onTrue(stepDown())
+        // (Driver) Bottom DPad -> goto min height (Held)
+        .whileTrue(bottomHeight());
 
     // (Driver) Right DPad -> Set Height
     driverController
