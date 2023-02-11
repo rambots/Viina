@@ -167,7 +167,10 @@ public class RobotContainer {
     Command command =
         new FunctionalCommand(
             // init
-            () -> timer.start(),
+            () -> {
+              timer.reset();
+              timer.start();
+            },
             // exec (do nothing)
             () -> {},
             // end (if canceled don't run)
@@ -175,7 +178,7 @@ public class RobotContainer {
               if (!interrupt) func.run();
             },
             // isFinish
-            () -> timer.get() > seconds,
+            () -> timer.hasElapsed(seconds),
             subsytem);
     return command;
   }
