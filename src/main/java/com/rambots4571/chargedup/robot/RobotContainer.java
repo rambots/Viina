@@ -120,15 +120,7 @@ public class RobotContainer {
     // (Driver) Right DPad -> Set Height
     driverController
         .getDPadButton(Direction.RIGHT)
-        .whileTrue(
-            new RunEndCommand(
-                () -> {
-                  elevator.setCurrentPosition();
-                },
-                () -> {
-                  elevator.stopMotors();
-                },
-                elevator));
+        .whileTrue(new RunEndCommand(elevator::setCurrentPosition, elevator::stopMotors, elevator));
 
     // (Driver) Right Bumper -> Balance on Beam
     driverController.getButton(Button.RightBumper).whileTrue(balanceOnBeam);
