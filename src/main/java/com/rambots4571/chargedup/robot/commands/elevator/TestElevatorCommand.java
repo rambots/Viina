@@ -2,7 +2,7 @@ package com.rambots4571.chargedup.robot.commands.elevator;
 
 import com.rambots4571.chargedup.robot.subsystems.Elevator;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.util.function.DoubleSupplier;
 
@@ -38,19 +38,10 @@ public class TestElevatorCommand extends CommandBase {
     currVel = vel;
   }
 
-  private void log() {
-    SmartDashboard.putNumber("Elevator/raw position", elevator.getRawEncoderPosition());
-    SmartDashboard.putNumber("Elevator/max vel", maxVel);
-    SmartDashboard.putNumber("Elevator/vel", currVel);
-    SmartDashboard.putNumber("Elevator/max accel", maxAccel);
-    SmartDashboard.putNumber("Elevator/accel", currVel);
-  }
-
   @Override
   public void execute() {
     elevator.setBaseMotor(motorSpeed.getAsDouble());
     updateValues();
-    log();
   }
 
   @Override
@@ -61,5 +52,13 @@ public class TestElevatorCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     elevator.stopMotors();
+  }
+
+  @Override
+  public void initSendable(SendableBuilder builder) {
+    builder.addDoubleProperty("raw positon", elevator::getRawEncoderPosition, null);
+    builder.addDoubleProperty("max velocity", () -> maxVel, null);
+    builder.addDoubleProperty("velocity", () -> currVel, null);
+    builder.addDoubleProperty("max acceleration", () -> maxAccel, null);
   }
 }
