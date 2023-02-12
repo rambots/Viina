@@ -156,8 +156,8 @@ public final class Constants {
   }
 
   public static final class Cvator {
-    public static final int BASE_MOTOR_MASTER = 7;
-    public static final int BASE_MOTOR_FOLLOWER = 8;
+    public static final int BASE_MOTOR_MASTER = 15;
+    public static final int BASE_MOTOR_FOLLOWER = 16;
 
     public static final int LIMITSWITCH = 0;
 

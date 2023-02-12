@@ -61,7 +61,7 @@ public class RobotContainer {
 
     balanceOnBeam = new BalanceOnBeam(driveTrain);
 
-    driveTrain.setDefaultCommand(swerveDriveCommand);
+    // driveTrain.setDefaultCommand(swerveDriveCommand);
 
     // Other Such Stuff
     autoBuilder =
@@ -87,7 +87,7 @@ public class RobotContainer {
             Elevator.getInstance(), () -> driverController.getAxisValue(Gamepad.Axis.RightYAxis));
 
     // TODO: uncomment to test elevator
-    // Elevator.getInstance().setDefaultCommand(testElevatorCommand);
+    Elevator.getInstance().setDefaultCommand(testElevatorCommand);
 
     configureBindings();
 
