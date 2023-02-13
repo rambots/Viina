@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import com.rambots4571.chargedup.robot.Constants.Cvator;
+import com.rambots4571.chargedup.robot.Constants.Cvator.ArmPIDF;
+import com.rambots4571.chargedup.robot.Constants.Cvator.ElevatorPIDF;
 import com.rambots4571.chargedup.robot.Constants.Cvator.Height;
 import com.rambots4571.chargedup.robot.Constants.Cvator.PositionMode;
 import com.rambots4571.chargedup.robot.Constants.Settings;
@@ -23,8 +25,8 @@ import java.util.function.Function;
 
 public class Elevator extends SubsystemBase {
 
-  private final WPI_TalonFX baseMotorMaster, baseMotorFollower;
-  private final TalonPID baseMotorController;
+  private final WPI_TalonFX baseMotorMaster, baseMotorFollower, armMotor;
+  private final TalonPID baseMotorController, armController;
 
   private final DigitalInput limitSwitch;
 
@@ -46,7 +48,9 @@ public class Elevator extends SubsystemBase {
     baseMotorMaster = new WPI_TalonFX(Cvator.BASE_MOTOR_MASTER);
     baseMotorFollower = new WPI_TalonFX(Cvator.BASE_MOTOR_FOLLOWER);
 
-    List.of(baseMotorMaster, baseMotorFollower)
+    armMotor = new WPI_TalonFX(Cvator.ARM_MOTOR);
+
+    List.of(baseMotorMaster, baseMotorFollower, armMotor)
         .forEach(
             motor -> {
               motor.configFactoryDefault();
@@ -66,7 +70,10 @@ public class Elevator extends SubsystemBase {
     baseMotorFollower.follow(baseMotorMaster);
 
     baseMotorController = new TalonPID(baseMotorMaster);
-    baseMotorController.setPIDF(Cvator.kP, Cvator.kI, Cvator.kD, Cvator.kF);
+    baseMotorController.setPIDF(ElevatorPIDF.kP, ElevatorPIDF.kI, ElevatorPIDF.kD, ElevatorPIDF.kF);
+
+    armController = new TalonPID(armMotor);
+    armController.setPIDF(ArmPIDF.kP, ArmPIDF.kI, ArmPIDF.kD, ArmPIDF.kF);
 
     addChild("BaseMotor PID", baseMotorController.getTuner());
 

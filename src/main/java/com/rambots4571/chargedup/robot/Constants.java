@@ -158,6 +158,7 @@ public final class Constants {
   public static final class Cvator {
     public static final int BASE_MOTOR_MASTER = 15;
     public static final int BASE_MOTOR_FOLLOWER = 16;
+    public static final int ARM_MOTOR = 17;
 
     public static final int LIMITSWITCH = 0;
 
@@ -175,10 +176,21 @@ public final class Constants {
         new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
 
     // TODO: Find and tune real values
+    public static final class ElevatorPIDF {
+      
     public static final double kP = 0;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kF = 0;
+      }
+
+    public static final class ArmPIDF {
+
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double kF = 0;
+    }
 
     public static final double cruiseVel = 0; // u/100_ms
     public static final double motionAccel = 0; // u/100_ms/s
