@@ -1,4 +1,4 @@
-package com.rambots4571.chargedup.robot.utils;
+package com.rambots4571.chargedup.robot.swerve;
 
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;

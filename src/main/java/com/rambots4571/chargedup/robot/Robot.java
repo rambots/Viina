@@ -6,7 +6,7 @@ package com.rambots4571.chargedup.robot;
 
 import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
-import com.rambots4571.chargedup.robot.utils.CTREConfigs;
+import com.rambots4571.chargedup.robot.swerve.CTREConfigs;
 import com.rambots4571.rampage.telemetry.Alert;
 import com.rambots4571.rampage.telemetry.Alert.AlertType;
 import com.rambots4571.rampage.telemetry.BatteryTracker;

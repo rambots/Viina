@@ -5,7 +5,6 @@
 package com.rambots4571.chargedup.robot.subsystems;
 
 import com.ctre.phoenix.sensors.Pigeon2;
-
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.chargedup.robot.utils.SwerveModule;

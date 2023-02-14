@@ -4,12 +4,11 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
-
-import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Robot;
+import com.rambots4571.chargedup.robot.Constants.DriveConstants;
+import com.rambots4571.chargedup.robot.swerve.CTREModuleState;
+import com.rambots4571.chargedup.robot.swerve.SwerveModuleConstants;
 import com.rambots4571.rampage.math.Converter;
-import com.rambots4571.rampage.swerve.CTREModuleState;
-import com.rambots4571.rampage.swerve.SwerveModuleConstants;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -29,16 +28,16 @@ public class SwerveModule {
 
   public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants) {
     this.moduleNumber = moduleNumber;
-    this.angleOffset = moduleConstants.getAngleOffset();
+    this.angleOffset = moduleConstants.angleOffset;
 
     // Configs
-    angleEncoder = new CANCoder(moduleConstants.getCancoderID());
+    angleEncoder = new CANCoder(moduleConstants.cancoderID);
     configAngleEncoder();
 
-    turnMotor = new TalonFX(moduleConstants.getAngleMotorID());
+    turnMotor = new TalonFX(moduleConstants.angleMotorID);
     configTurnMotor();
 
-    driveMotor = new TalonFX(moduleConstants.getDriveMotorID());
+    driveMotor = new TalonFX(moduleConstants.driveMotorID);
     configDriveMotor();
 
     lastAngle = getState().angle;
