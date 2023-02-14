@@ -13,8 +13,6 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.rambots4571.chargedup.robot.swerve.COTSFalconSwerveConstants;
 import com.rambots4571.chargedup.robot.swerve.SwerveModuleConstants;
-import com.rambots4571.rampage.telemetry.Alert;
-import com.rambots4571.rampage.telemetry.Alert.AlertType;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -22,12 +20,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.DoubleSupplier;
 
 public final class Constants {
@@ -224,55 +220,6 @@ public final class Constants {
   public static class Settings {
     public static final double BALANCE_BEAM_DEGREES_GOAL = 0.0;
     public static final int timeoutMs = 10;
-
-    ///////////////// ADVANTAGE KIT LOGGING /////////////////
-
-    private static final RobotType robot = RobotType.ROBOT_2023P;
-
-    private static final Alert invalidRobotAlert =
-        new Alert("Invalid robot selected, using competition robot as default.", AlertType.ERROR);
-
-    public static final Map<RobotType, String> logFolders =
-        Map.of(RobotType.ROBOT_2023P, "/media/sda2/");
-
-    public static enum Mode {
-      REAL,
-      REPLAY,
-      SIM
-    }
-
-    public static enum RobotType {
-      ROBOT_2023C,
-      ROBOT_2023P,
-      ROBOT_SIMBOT
-    }
-
-    public static RobotType getRobot() {
-      if (RobotBase.isReal()) {
-        if (robot == RobotType.ROBOT_SIMBOT) { // Invalid robot selected
-          invalidRobotAlert.set(true);
-          return RobotType.ROBOT_2023C;
-        } else {
-          return robot;
-        }
-      } else {
-        return robot;
-      }
-    }
-
-    public static Mode getMode() {
-      switch (getRobot()) {
-        case ROBOT_2023C:
-        case ROBOT_2023P:
-          return RobotBase.isReal() ? Mode.REAL : Mode.REPLAY;
-
-        case ROBOT_SIMBOT:
-          return Mode.SIM;
-
-        default:
-          return Mode.REAL;
-      }
-    }
 
     ///////////////// JOYSTICKS /////////////////
 

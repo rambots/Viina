@@ -61,7 +61,7 @@ public class RobotContainer {
 
     balanceOnBeam = new BalanceOnBeam(driveTrain);
 
-    // driveTrain.setDefaultCommand(swerveDriveCommand);
+    driveTrain.setDefaultCommand(swerveDriveCommand);
 
     // Other Such Stuff
     autoBuilder =
