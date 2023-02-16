@@ -8,6 +8,12 @@ import com.rambots4571.chargedup.robot.subsystems.Elevator;
 import java.util.function.Function;
 
 public class ScoringState {
+  private final Elevator elevator;
+  private final Arm arm;
+
+  // starting position mode
+  private PositionMode mode = PositionMode.CONE;
+
   private final Position[] positions =
       new Position[] {
         Position.BOTTOM, Position.MIDDLE, Position.TOP,
@@ -15,17 +21,13 @@ public class ScoringState {
 
   private int index = 0;
 
-  private PositionMode mode;
-
-  private Function<Position, Double> getHeight = pos -> pos.getConeHeight();
-
-  private final Elevator elevator;
-
-  private final Arm arm;
+  private Function<Position, Double> getHeight;
 
   public ScoringState(Elevator elevator, Arm arm) {
     this.elevator = elevator;
     this.arm = arm;
+
+    getHeight = mode == PositionMode.CONE ? pos -> pos.getConeHeight() : pos -> pos.getCubeHeight();
   }
 
   public Position currPosition() {
@@ -54,12 +56,14 @@ public class ScoringState {
     updatePostion();
   }
 
+  /** Updates the desired postions in each subsystem which will be set inside their periodic() */
   public void updatePostion() {
     Position pos = currPosition();
     elevator.setDesiredHeight(getHeight.apply(pos));
     arm.setDesiredLength(pos.getArmlength());
   }
 
+  /** Manually go to position (mostly for testing) without the periodic */
   public void goToPosition() {
     Position pos = currPosition();
     elevator.setHeight(getHeight.apply(pos));
