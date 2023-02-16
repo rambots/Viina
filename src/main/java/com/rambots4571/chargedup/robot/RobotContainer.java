@@ -12,6 +12,8 @@ import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.chargedup.robot.commands.drive.BalanceOnBeam;
 import com.rambots4571.chargedup.robot.commands.drive.SwerveDriveCommand;
 import com.rambots4571.chargedup.robot.commands.elevator.TestElevatorCommand;
+import com.rambots4571.chargedup.robot.state.ScoringState;
+import com.rambots4571.chargedup.robot.subsystems.Arm;
 import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
 import com.rambots4571.chargedup.robot.subsystems.Elevator;
 import com.rambots4571.rampage.command.RunEndCommand;
@@ -38,9 +40,12 @@ public class RobotContainer {
 
   public final SwerveAutoBuilder autoBuilder;
 
+  private final ScoringState scoringState;
+
   // Subsytems
   private final DriveTrain driveTrain;
   private final Elevator elevator;
+  private final Arm arm;
 
   // Commands
   private final SwerveDriveCommand swerveDriveCommand;
@@ -50,6 +55,9 @@ public class RobotContainer {
   public RobotContainer() {
     driveTrain = DriveTrain.getInstance();
     elevator = Elevator.getInstance();
+    arm = Arm.getInstance();
+
+    scoringState = new ScoringState(elevator, arm);
 
     swerveDriveCommand =
         new SwerveDriveCommand(
@@ -120,7 +128,8 @@ public class RobotContainer {
     // (Driver) Right DPad -> Set Height
     driverController
         .getDPadButton(Direction.RIGHT)
-        .whileTrue(new RunEndCommand(elevator::setCurrentPosition, elevator::stopMotors, elevator));
+        .whileTrue(
+            new RunEndCommand(scoringState::goToPosition, scoringState::stop, elevator, arm));
 
     // (Driver) Right Bumper -> Balance on Beam
     driverController.getButton(Button.RightBumper).whileTrue(balanceOnBeam);
@@ -136,26 +145,26 @@ public class RobotContainer {
   }
 
   private Command togglePositionMode() {
-    return new InstantCommand(elevator::togglePositionMode, elevator);
+    return new InstantCommand(scoringState::toggleMode, elevator, arm);
   }
 
   private Command stepUp() {
-    return new InstantCommand(elevator::stepUp, elevator);
+    return new InstantCommand(scoringState::stepUp, elevator, arm);
   }
 
   private Command stepDown() {
-    return new InstantCommand(elevator::stepDown, elevator);
+    return new InstantCommand(scoringState::stepDown, elevator, arm);
   }
 
   private Command bottomHeight() {
-    return runAferSomeTime(elevator::bottomHeight, 1, elevator);
+    return runAferSomeTime(scoringState::minPos, 1, elevator, arm);
   }
 
   private Command topHeight() {
-    return runAferSomeTime(elevator::topHeight, 1, elevator);
+    return runAferSomeTime(scoringState::maxPos, 1, elevator, arm);
   }
 
-  private Command runAferSomeTime(Runnable func, double seconds, SubsystemBase subsytem) {
+  private Command runAferSomeTime(Runnable func, double seconds, SubsystemBase... subsytem) {
     return new WaitCommand(seconds).andThen(func, subsytem);
   }
 }
