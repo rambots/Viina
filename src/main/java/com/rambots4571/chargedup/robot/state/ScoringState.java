@@ -63,7 +63,7 @@ public class ScoringState {
 
   public void setState(double height, double length) {
     elevator.setDesiredHeight(length);
-    arm.setLength(length);
+    arm.setDesiredLength(length);
   }
 
   /** Updates the desired postions in each subsystem which will be set inside their periodic() */
