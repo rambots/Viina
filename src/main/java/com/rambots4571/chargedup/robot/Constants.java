@@ -153,7 +153,6 @@ public final class Constants {
   public static final class Cvator {
     public static final int BASE_MOTOR_MASTER = 15;
     public static final int BASE_MOTOR_FOLLOWER = 16;
-    public static final int ARM_MOTOR = 17;
 
     public static final int LIMITSWITCH = 0;
 
@@ -164,6 +163,7 @@ public final class Constants {
     public static final TalonFXInvertType masterInvert = TalonFXInvertType.Clockwise;
     public static final TalonFXInvertType followerInvert = TalonFXInvertType.CounterClockwise;
 
+    //TODO: Tune Stator/Supply Limits
     public static final StatorCurrentLimitConfiguration statorLimit =
         new StatorCurrentLimitConfiguration(true, 40, 70, 2);
 
@@ -215,6 +215,26 @@ public final class Constants {
       CONE,
       CUBE
     }
+  }
+
+  public static class ArmConstants {
+    public static final int ARM_MOTOR = 17;
+
+    public static final TalonFXInvertType INVERT = TalonFXInvertType.Clockwise; //TODO: Test this
+    public static final NeutralMode MODE = NeutralMode.Brake;
+
+    public static final StatorCurrentLimitConfiguration STATOR_LIMIT =
+        new StatorCurrentLimitConfiguration(true, 40, 70, 2);
+
+    public static final SupplyCurrentLimitConfiguration SUPPLY_LIMIT =
+        new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
+    
+    public static final double RAMP_RATE = 0.15;
+
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double kF = 0;
   }
 
   public static class Settings {
