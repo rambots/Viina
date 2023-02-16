@@ -3,24 +3,17 @@ package com.rambots4571.chargedup.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import com.rambots4571.chargedup.robot.Constants.Cvator;
 import com.rambots4571.chargedup.robot.Constants.Cvator.ElevatorPIDF;
-import com.rambots4571.chargedup.robot.Constants.Cvator.Height;
-import com.rambots4571.chargedup.robot.Constants.Cvator.PositionMode;
 import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.rampage.motor.TalonPID;
-import com.rambots4571.rampage.util.LinkedList;
-import com.rambots4571.rampage.util.LinkedList.Node;
 
-import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import java.util.List;
-import java.util.function.DoubleSupplier;
-import java.util.function.Function;
 
 public class Elevator extends SubsystemBase {
 
@@ -28,14 +21,7 @@ public class Elevator extends SubsystemBase {
   private final TalonPID baseMotorController;
 
   private final DigitalInput limitSwitch;
-
-  private final LinkedList<Pair<Height, Height>> heights = new LinkedList<>();
-  private Node<Pair<Height, Height>> currNode;
-
-  private PositionMode mode = PositionMode.CONE;
-
-  private Function<Node<Pair<Height, Height>>, Height> getHeight =
-      node -> node.getItem().getFirst();
+  private double desiredHeight;
 
   private static Elevator instance = new Elevator();
 
@@ -72,19 +58,6 @@ public class Elevator extends SubsystemBase {
     addChild("BaseMotor PID", baseMotorController.getTuner());
 
     limitSwitch = new DigitalInput(Cvator.LIMITSWITCH);
-
-    addHeights();
-    currNode = heights.getFirst();
-  }
-
-  private void addHeightPair(Height cone, Height cube) {
-    heights.add(new Pair<Height, Height>(cone, cube));
-  }
-
-  private void addHeights() {
-    addHeightPair(Height.CONE_BOTTOM, Height.CUBE_BOTTOM);
-    addHeightPair(Height.CONE_MIDDLE, Height.CUBE_MIDDLE);
-    addHeightPair(Height.CONE_TOP, Height.CUBE_TOP);
   }
 
   public void configMotionMagic() {
@@ -111,36 +84,6 @@ public class Elevator extends SubsystemBase {
     return !limitSwitch.get();
   }
 
-  public void togglePositionMode() {
-    if (mode == PositionMode.CONE) {
-      getHeight = node -> node.getItem().getSecond();
-      mode = PositionMode.CUBE;
-    } else {
-      getHeight = node -> node.getItem().getFirst();
-      mode = PositionMode.CONE;
-    }
-  }
-
-  public void stepUp() {
-    if (currNode.getNext() != null) {
-      currNode = currNode.getNext();
-    }
-  }
-
-  public void stepDown() {
-    if (currNode.getPrev() != null) {
-      currNode = currNode.getPrev();
-    }
-  }
-
-  public void bottomHeight() {
-    currNode = heights.getFirst();
-  }
-
-  public void topHeight() {
-    currNode = heights.getLast();
-  }
-
   public void setBaseMotor(double speed) {
     if (isLimitSwitchPressed() && speed < 0) {
       stopMotors();
@@ -149,16 +92,16 @@ public class Elevator extends SubsystemBase {
     }
   }
 
+  public void setHeight(double raw) {
+    baseMotorMaster.set(TalonFXControlMode.MotionMagic, raw);
+  }
+
+  public void setDesiredHeight(double raw) {
+    this.desiredHeight = raw;
+  }
+
   public void stopMotors() {
     baseMotorMaster.set(0);
-  }
-
-  public void setCurrentPosition() {
-    setHeight(getHeight.apply(currNode));
-  }
-
-  public void setHeight(DoubleSupplier height) {
-    baseMotorMaster.set(ControlMode.MotionMagic, height.getAsDouble());
   }
 
   public double getRawEncoderPosition() {
@@ -171,6 +114,6 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // setCurrentPosition();
+    // setHeight(desiredHeight);
   }
 }
