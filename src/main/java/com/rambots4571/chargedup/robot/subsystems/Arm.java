@@ -1,5 +1,7 @@
 package com.rambots4571.chargedup.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -30,6 +32,8 @@ public class Arm extends SubsystemBase {
     addChild("Arm Motor PID", armMotorController.getTuner());
 
     configMotor();
+
+    configMotionMagic();
   }
 
   public void configMotor() {
@@ -45,6 +49,20 @@ public class Arm extends SubsystemBase {
 
     armMotor.enableVoltageCompensation(true);
     armMotor.configVoltageCompSaturation(12, Settings.timeoutMs);
+  }
+
+  public void configMotionMagic() {
+    armMotor.configSelectedFeedbackSensor(
+        FeedbackDevice.IntegratedSensor, 0, Settings.timeoutMs);
+    armMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Settings.timeoutMs);
+    armMotor.setStatusFramePeriod(
+        StatusFrameEnhanced.Status_10_MotionMagic, 10, Settings.timeoutMs);
+
+    armMotor.configOpenloopRamp(0.15, Settings.timeoutMs);
+
+    armMotor.configMotionCruiseVelocity(ArmConstants.cruiseVel, Settings.timeoutMs);
+    armMotor.configMotionAcceleration(ArmConstants.motionAccel, Settings.timeoutMs);
   }
 
   public void setLength(double raw) {
