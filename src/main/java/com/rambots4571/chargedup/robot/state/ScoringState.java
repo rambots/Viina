@@ -56,6 +56,16 @@ public class ScoringState {
     updatePostion();
   }
 
+  public void setState(Position pos, PositionMode mode) {
+    double height = mode == PositionMode.CONE ? pos.getConeHeight() : pos.getCubeHeight();
+    setState(height, pos.getArmlength());
+  }
+
+  public void setState(double height, double length) {
+    elevator.setDesiredHeight(length);
+    arm.setLength(length);
+  }
+
   /** Updates the desired postions in each subsystem which will be set inside their periodic() */
   public void updatePostion() {
     Position pos = currPosition();
