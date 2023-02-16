@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
+
 import com.rambots4571.chargedup.robot.swerve.COTSFalconSwerveConstants;
 import com.rambots4571.chargedup.robot.swerve.SwerveModuleConstants;
 
@@ -24,7 +25,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.DoubleSupplier;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 public final class Constants {
 
@@ -163,7 +165,7 @@ public final class Constants {
     public static final TalonFXInvertType masterInvert = TalonFXInvertType.Clockwise;
     public static final TalonFXInvertType followerInvert = TalonFXInvertType.CounterClockwise;
 
-    //TODO: Tune Stator/Supply Limits
+    // TODO: Tune Stator/Supply Limits
     public static final StatorCurrentLimitConfiguration statorLimit =
         new StatorCurrentLimitConfiguration(true, 40, 70, 2);
 
@@ -173,42 +175,30 @@ public final class Constants {
     // TODO: Find and tune real values
     public static final class ElevatorPIDF {
 
-    public static final double kP = 0;
-    public static final double kI = 0;
-    public static final double kD = 0;
-    public static final double kF = 0;
-      }
+      public static final double kP = 0;
+      public static final double kI = 0;
+      public static final double kD = 0;
+      public static final double kF = 0;
+    }
 
     public static final class ArmPIDF {
 
-    public static final double kP = 0;
-    public static final double kI = 0;
-    public static final double kD = 0;
-    public static final double kF = 0;
+      public static final double kP = 0;
+      public static final double kI = 0;
+      public static final double kD = 0;
+      public static final double kF = 0;
     }
 
     public static final double cruiseVel = 0; // u/100_ms
     public static final double motionAccel = 0; // u/100_ms/s
 
-    // TODO: add real heights
-    public static enum Height implements DoubleSupplier {
-      CUBE_BOTTOM(0.0),
-      CUBE_MIDDLE(0.0),
-      CUBE_TOP(0.0),
-      CONE_BOTTOM(0.0),
-      CONE_MIDDLE(0.0),
-      CONE_TOP(0.0);
-
-      private double height;
-
-      Height(double height) {
-        this.height = height;
-      }
-
-      @Override
-      public double getAsDouble() {
-        return height;
-      }
+    @Getter
+    @AllArgsConstructor
+    public static enum Position {
+      BOTTOM(0, 0, 0),
+      MIDDLE(0, 0, 0),
+      TOP(0, 0, 0);
+      private final double cubeHeight, coneHeight, armlength;
     }
 
     public static enum PositionMode {
@@ -220,7 +210,7 @@ public final class Constants {
   public static class ArmConstants {
     public static final int ARM_MOTOR = 17;
 
-    public static final TalonFXInvertType INVERT = TalonFXInvertType.Clockwise; //TODO: Test this
+    public static final TalonFXInvertType INVERT = TalonFXInvertType.Clockwise; // TODO: Test this
     public static final NeutralMode MODE = NeutralMode.Brake;
 
     public static final StatorCurrentLimitConfiguration STATOR_LIMIT =
@@ -228,7 +218,7 @@ public final class Constants {
 
     public static final SupplyCurrentLimitConfiguration SUPPLY_LIMIT =
         new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
-    
+
     public static final double RAMP_RATE = 0.15;
 
     public static final double kP = 0;
