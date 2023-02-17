@@ -121,7 +121,7 @@ spotless {
         ratchetFrom 'HEAD'
         toggleOffOn()
         googleJavaFormat()
-        importOrder('com.rambots4571', 'edu.wpi')
+        importOrder('com.rambots4571.rampage', 'com.rambots4571', 'edu.wpi')
         removeUnusedImports()
         trimTrailingWhitespace()
         endWithNewline()
