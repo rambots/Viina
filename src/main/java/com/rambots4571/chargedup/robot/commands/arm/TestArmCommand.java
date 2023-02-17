@@ -42,7 +42,7 @@ public class TestArmCommand extends CommandBase {
 
   @Override
   public void execute() {
-    arm.setLength(motorSpeed.getAsDouble());
+    arm.setPower(motorSpeed.getAsDouble());
     updateValues();
   }
 
