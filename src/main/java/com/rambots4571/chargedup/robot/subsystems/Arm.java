@@ -52,10 +52,8 @@ public class Arm extends SubsystemBase {
   }
 
   public void configMotionMagic() {
-    armMotor.configSelectedFeedbackSensor(
-        FeedbackDevice.IntegratedSensor, 0, Settings.timeoutMs);
-    armMotor.setStatusFramePeriod(
-        StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Settings.timeoutMs);
+    armMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, Settings.timeoutMs);
+    armMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Settings.timeoutMs);
     armMotor.setStatusFramePeriod(
         StatusFrameEnhanced.Status_10_MotionMagic, 10, Settings.timeoutMs);
 
@@ -75,6 +73,14 @@ public class Arm extends SubsystemBase {
 
   public void stop() {
     armMotor.set(0);
+  }
+
+  public double getRawSpeed() {
+    return armMotor.getSelectedSensorVelocity();
+  }
+
+  public double getRawEncoderPosition() {
+    return armMotor.getSelectedSensorPosition();
   }
 
   @Override
