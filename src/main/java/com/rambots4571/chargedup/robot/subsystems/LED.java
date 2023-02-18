@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LED extends SubsystemBase {
   private final REVBlinkin blinkin;
-  private Pattern pattern;
+  private Pattern pattern = Pattern.Twinkle.OCEAN;
 
   private static LED led = new LED();
 
