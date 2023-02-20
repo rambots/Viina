@@ -9,6 +9,7 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.rambots4571.chargedup.robot.Constants.AutoPaths;
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Constants.Settings;
+import com.rambots4571.chargedup.robot.commands.arm.TestArmCommand;
 import com.rambots4571.chargedup.robot.commands.drive.BalanceOnBeam;
 import com.rambots4571.chargedup.robot.commands.drive.SwerveDriveCommand;
 import com.rambots4571.chargedup.robot.commands.elevator.TestElevatorCommand;
@@ -33,6 +34,7 @@ public class RobotContainer {
 
   // Misceallaneous
   public final Gamepad driverController = new Gamepad(Settings.DRIVERCONTROLLER);
+  public final Gamepad gamepad = new Gamepad(Settings.GAMEPAD);
 
   public final Trigger robotCentricToggle = driverController.getButton(Button.Y);
 
@@ -50,6 +52,7 @@ public class RobotContainer {
   // Commands
   private final SwerveDriveCommand swerveDriveCommand;
   private final TestElevatorCommand testElevatorCommand;
+  private final TestArmCommand testArmCommand;
   private final BalanceOnBeam balanceOnBeam;
 
   public RobotContainer() {
@@ -92,10 +95,17 @@ public class RobotContainer {
 
     testElevatorCommand =
         new TestElevatorCommand(
-            Elevator.getInstance(), () -> driverController.getAxisValue(Gamepad.Axis.RightYAxis));
+            elevator, () -> driverController.getAxisValue(Gamepad.Axis.RightYAxis));
 
     // TODO: uncomment to test elevator
-    Elevator.getInstance().setDefaultCommand(testElevatorCommand);
+    elevator.setDefaultCommand(testElevatorCommand);
+
+    testArmCommand = 
+        new TestArmCommand(
+            arm, () -> gamepad.getAxisValue(Gamepad.Axis.RightXAxis));
+    
+    // TODO: uncomment to test arm
+    arm.setDefaultCommand(testArmCommand); 
 
     configureBindings();
 

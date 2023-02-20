@@ -237,6 +237,7 @@ public final class Constants {
     ///////////////// JOYSTICKS /////////////////
 
     public static final int DRIVERCONTROLLER = 3;
+    public static final int GAMEPAD = 2;
     public static final double STICK_DEADBAND = 0.1;
 
     ///////////////// PHOTONVISION /////////////////
