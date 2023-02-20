@@ -83,7 +83,7 @@ public final class Constants {
     public static final boolean driveMotorInvert = chosenModule.driveMotorInvert;
     public static final boolean turnMotorInvert = chosenModule.angleMotorInvert;
 
-    public static final boolean canCoderInvert = chosenModule.angleMotorInvert;
+    public static final boolean canCoderInvert = chosenModule.canCoderInvert;
 
     public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
@@ -127,12 +127,12 @@ public final class Constants {
             new Translation2d(-kTrackWidthMeters / 2.0, -kWheelBaseMeters / 2.0));
 
     ///////////////// CONTROL CHARACTERISTICS /////////////////
-    public static final double angleKP = 0.06;
+    public static final double angleKP = chosenModule.angleKP;
     public static final double angleKI = chosenModule.angleKI;
     public static final double angleKD = chosenModule.angleKD;
     public static final double angleKF = chosenModule.angleKF;
 
-    public static final double driveKP = 0.005; // TODO: Tune this
+    public static final double driveKP = 0.05; // TODO: Tune this
     public static final double driveKI = 0.0;
     public static final double driveKD = 0.0;
     public static final double driveKF = 0.0;

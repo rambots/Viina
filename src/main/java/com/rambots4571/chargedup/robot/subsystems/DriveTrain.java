@@ -4,7 +4,8 @@
 
 package com.rambots4571.chargedup.robot.subsystems;
 
-import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
+
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.chargedup.robot.utils.SwerveModule;
@@ -27,7 +28,7 @@ public class DriveTrain extends SubsystemBase {
   private final SwerveModule[] modules;
   private final SwerveDriveOdometry m_Odometry;
 
-  private final Pigeon2 m_gyro;
+  private final WPI_Pigeon2 m_gyro;
 
   private static DriveTrain instance = new DriveTrain();
 
@@ -36,7 +37,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public DriveTrain() {
-    m_gyro = new Pigeon2(DriveConstants.PIGEON_IMU_2);
+    m_gyro = new WPI_Pigeon2(DriveConstants.PIGEON_IMU_2, "BOYSALIAR");
     m_gyro.configFactoryDefault();
     zeroGyro();
 

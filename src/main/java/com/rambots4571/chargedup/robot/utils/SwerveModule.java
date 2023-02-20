@@ -1,14 +1,15 @@
 package com.rambots4571.chargedup.robot.utils;
 
+import com.rambots4571.rampage.math.Converter;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
-import com.rambots4571.chargedup.robot.Robot;
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
+import com.rambots4571.chargedup.robot.Robot;
 import com.rambots4571.chargedup.robot.swerve.CTREModuleState;
 import com.rambots4571.chargedup.robot.swerve.SwerveModuleConstants;
-import com.rambots4571.rampage.math.Converter;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -31,13 +32,13 @@ public class SwerveModule {
     this.angleOffset = moduleConstants.angleOffset;
 
     // Configs
-    angleEncoder = new CANCoder(moduleConstants.cancoderID);
+    angleEncoder = new CANCoder(moduleConstants.cancoderID, "BOYSALIAR");
     configAngleEncoder();
 
-    turnMotor = new TalonFX(moduleConstants.angleMotorID);
+    turnMotor = new TalonFX(moduleConstants.angleMotorID, "BOYSALIAR");
     configTurnMotor();
 
-    driveMotor = new TalonFX(moduleConstants.driveMotorID);
+    driveMotor = new TalonFX(moduleConstants.driveMotorID, "BOYSALIAR");
     configDriveMotor();
 
     lastAngle = getState().angle;
@@ -137,23 +138,23 @@ public class SwerveModule {
   // *****************************************
 
   private void configDriveMotor() {
-    driveMotor.configFactoryDefault();
-    driveMotor.configAllSettings(Robot.configs.driveFXConfig);
+    driveMotor.configFactoryDefault(100);
+    driveMotor.configAllSettings(Robot.configs.driveFXConfig, 100);
     driveMotor.setInverted(DriveConstants.driveMotorInvert);
     driveMotor.setNeutralMode(DriveConstants.driveNeutralMode);
     driveMotor.setSelectedSensorPosition(0);
   }
 
   private void configTurnMotor() {
-    turnMotor.configFactoryDefault();
-    turnMotor.configAllSettings(Robot.configs.turnFXConfig);
+    turnMotor.configFactoryDefault(100);
+    turnMotor.configAllSettings(Robot.configs.turnFXConfig, 100);
     turnMotor.setInverted(DriveConstants.turnMotorInvert);
     turnMotor.setNeutralMode(DriveConstants.angleNeutralMode);
     resetToAbsolute();
   }
 
   private void configAngleEncoder() {
-    angleEncoder.configFactoryDefault();
-    angleEncoder.configAllSettings(Robot.configs.canCoderConfig);
+    angleEncoder.configFactoryDefault(100);
+    angleEncoder.configAllSettings(Robot.configs.canCoderConfig, 100);
   }
 }
