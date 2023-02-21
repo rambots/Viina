@@ -4,7 +4,6 @@
 
 package com.rambots4571.chargedup.robot;
 
-import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
 import com.rambots4571.chargedup.robot.swerve.CTREConfigs;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -22,14 +21,12 @@ public class Robot extends TimedRobot {
   private Command autoCommand;
 
   public static CTREConfigs configs;
-  public static DriveTrain driveTrain;
 
   @Override
   public void robotInit() {
     configs = new CTREConfigs();
 
     container = new RobotContainer();
-    driveTrain = new DriveTrain();
   }
 
   @Override
@@ -52,7 +49,6 @@ public class Robot extends TimedRobot {
     if (autoCommand != null) {
       autoCommand.schedule();
     }
-    driveTrain.resetModulesToAbsolute();
   }
 
   /** This function is called periodically during autonomous. */
@@ -65,7 +61,6 @@ public class Robot extends TimedRobot {
     if (autoCommand != null) {
       autoCommand.cancel();
     }
-    driveTrain.resetModulesToAbsolute();
   }
 
   /** This function is called periodically during operator control. */

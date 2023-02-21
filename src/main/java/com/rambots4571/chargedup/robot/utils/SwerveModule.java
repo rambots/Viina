@@ -25,8 +25,6 @@ public class SwerveModule {
   private TalonFX turnMotor;
   private CANCoder angleEncoder;
 
-  public double CANcoderInitTime = 0.0;
-
   public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants) {
     this.moduleNumber = moduleNumber;
     this.angleOffset = moduleConstants.angleOffset;
@@ -137,24 +135,24 @@ public class SwerveModule {
   // ************* CONFIGS *******************
   // *****************************************
 
-  private void configDriveMotor() {
-    driveMotor.configFactoryDefault(100);
-    driveMotor.configAllSettings(Robot.configs.driveFXConfig, 100);
-    driveMotor.setInverted(DriveConstants.driveMotorInvert);
-    driveMotor.setNeutralMode(DriveConstants.driveNeutralMode);
-    driveMotor.setSelectedSensorPosition(0);
+  private void configAngleEncoder() {
+    angleEncoder.configFactoryDefault();
+    angleEncoder.configAllSettings(Robot.configs.canCoderConfig);
   }
 
   private void configTurnMotor() {
     turnMotor.configFactoryDefault(100);
-    turnMotor.configAllSettings(Robot.configs.turnFXConfig, 100);
+    turnMotor.configAllSettings(Robot.configs.turnFXConfig);
     turnMotor.setInverted(DriveConstants.turnMotorInvert);
     turnMotor.setNeutralMode(DriveConstants.angleNeutralMode);
     resetToAbsolute();
   }
 
-  private void configAngleEncoder() {
-    angleEncoder.configFactoryDefault(100);
-    angleEncoder.configAllSettings(Robot.configs.canCoderConfig, 100);
+  private void configDriveMotor() {
+    driveMotor.configFactoryDefault();
+    driveMotor.configAllSettings(Robot.configs.driveFXConfig);
+    driveMotor.setInverted(DriveConstants.driveMotorInvert);
+    driveMotor.setNeutralMode(DriveConstants.driveNeutralMode);
+    driveMotor.setSelectedSensorPosition(0);
   }
 }

@@ -62,10 +62,11 @@ public class RobotContainer {
 
     scoringState = new ScoringState(elevator, arm);
 
+    // TODO: Axis are a potential failure point
     swerveDriveCommand =
         new SwerveDriveCommand(
             driveTrain,
-            () -> driverController.getAxisValue(Gamepad.Axis.LeftYAxis),
+            () -> -driverController.getAxisValue(Gamepad.Axis.LeftYAxis),
             () -> -driverController.getAxisValue(Gamepad.Axis.LeftXAxis),
             () -> -driverController.getAxisValue(Gamepad.Axis.RightXAxis),
             () -> robotCentricToggle.getAsBoolean());

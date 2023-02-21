@@ -148,7 +148,6 @@ public final class Constants {
     public static final SimpleMotorFeedforward swerveFF = new SimpleMotorFeedforward(kS, kV, kA);
 
     public static final PIDConstants tranlationPID = new PIDConstants(driveKP, driveKI, driveKD);
-
     public static final PIDConstants rotationPID = new PIDConstants(angleKP, angleKI, angleKD);
   }
 

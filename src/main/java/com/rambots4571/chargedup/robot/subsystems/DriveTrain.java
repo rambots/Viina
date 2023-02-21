@@ -55,18 +55,6 @@ public class DriveTrain extends SubsystemBase {
     m_Odometry =
         new SwerveDriveOdometry(
             DriveConstants.kDriveKinematics, getRotation2d(), getModulePositions());
-
-    resetOdometry(Settings.STARTING_POSITION);
-
-    for (SwerveModule mod : modules) {
-      DriverStation.reportError(
-          "CANcoder on Module "
-              + mod.moduleNumber
-              + " took "
-              + mod.CANcoderInitTime
-              + " ms to be ready.",
-          false);
-    }
   }
 
   // *****************************************
