@@ -1,4 +1,4 @@
-package com.rambots4571.chargedup.robot.subsystems;
+package com.rambots4571.chargedup.robot.utils;
 
 import com.rambots4571.rampage.led.Pattern;
 import com.rambots4571.rampage.led.REVBlinkin;
