@@ -4,6 +4,11 @@
 
 package com.rambots4571.chargedup.robot;
 
+import com.rambots4571.rampage.command.RunEndCommand;
+import com.rambots4571.rampage.controller.Gamepad;
+import com.rambots4571.rampage.controller.Gamepad.Button;
+import com.rambots4571.rampage.controller.component.DPadButton.Direction;
+
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import com.rambots4571.chargedup.robot.Constants.AutoPaths;
@@ -17,10 +22,6 @@ import com.rambots4571.chargedup.robot.state.ScoringState;
 import com.rambots4571.chargedup.robot.subsystems.Arm;
 import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
 import com.rambots4571.chargedup.robot.subsystems.Elevator;
-import com.rambots4571.rampage.command.RunEndCommand;
-import com.rambots4571.rampage.controller.Gamepad;
-import com.rambots4571.rampage.controller.Gamepad.Button;
-import com.rambots4571.rampage.controller.component.DPadButton.Direction;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -104,7 +105,7 @@ public class RobotContainer {
     testArmCommand = 
         new TestArmCommand(
             arm, () -> gamepad.getAxisValue(Gamepad.Axis.RightXAxis));
-    
+
     // TODO: uncomment to test arm
     arm.setDefaultCommand(testArmCommand); 
 
@@ -168,14 +169,14 @@ public class RobotContainer {
   }
 
   private Command bottomHeight() {
-    return runAferSomeTime(scoringState::minPos, 1, elevator, arm);
+    return runAfterSomeTime(scoringState::minPos, 1, elevator, arm);
   }
 
   private Command topHeight() {
-    return runAferSomeTime(scoringState::maxPos, 1, elevator, arm);
+    return runAfterSomeTime(scoringState::maxPos, 1, elevator, arm);
   }
 
-  private Command runAferSomeTime(Runnable func, double seconds, SubsystemBase... subsytem) {
+  private Command runAfterSomeTime(Runnable func, double seconds, SubsystemBase... subsytem) {
     return new WaitCommand(seconds).andThen(func, subsytem);
   }
 }
