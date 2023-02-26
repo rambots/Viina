@@ -229,6 +229,30 @@ public final class Constants {
     public static final double motionAccel = 4.0;
   }
 
+  public static class CTurret {
+    public static final int TURRET_MOTOR = 18;
+
+    public static final TalonFXInvertType INVERT = TalonFXInvertType.Clockwise; // TODO: Test this
+    public static final NeutralMode MODE = NeutralMode.Brake;
+
+    public static final StatorCurrentLimitConfiguration STATOR_LIMIT =
+        new StatorCurrentLimitConfiguration(true, 40, 70, 2);
+
+    public static final SupplyCurrentLimitConfiguration SUPPLY_LIMIT =
+        new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
+
+    public static final double RAMP_RATE = 0.15;
+    public static final double TURRET_SPEED = 0.5;
+
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double kF = 0;
+
+    public static final int LEFT_LIMIT_SWITCH = 1;
+    public static final int RIGHT_LIMIT_SWITCH = 2;
+  }
+
   public static class Settings {
     public static final double BALANCE_BEAM_DEGREES_GOAL = 0.0;
     public static final int timeoutMs = 10;
