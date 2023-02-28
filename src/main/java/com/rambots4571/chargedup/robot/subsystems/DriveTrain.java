@@ -2,8 +2,8 @@ package com.rambots4571.chargedup.robot.subsystems;
 
 import com.ctre.phoenix.sensors.Pigeon2;
 
-import com.rambots4571.chargedup.robot.Constants;
 import com.rambots4571.chargedup.robot.SwerveModule;
+import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,22 +17,22 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Swerve extends SubsystemBase {
+public class DriveTrain extends SubsystemBase {
   public SwerveDriveOdometry swerveOdometry;
   public SwerveModule[] mSwerveMods;
   public Pigeon2 gyro;
 
-  public Swerve() {
-    gyro = new Pigeon2(Constants.Swerve.pigeonID, "BOYSALIAR");
+  public DriveTrain() {
+    gyro = new Pigeon2(DriveConstants.pigeonID, "BOYSALIAR");
     gyro.configFactoryDefault();
     zeroGyro();
 
     mSwerveMods =
         new SwerveModule[] {
-          new SwerveModule(0, Constants.Swerve.Mod0.constants),
-          new SwerveModule(1, Constants.Swerve.Mod1.constants),
-          new SwerveModule(2, Constants.Swerve.Mod2.constants),
-          new SwerveModule(3, Constants.Swerve.Mod3.constants)
+          new SwerveModule(0, DriveConstants.Mod0.constants),
+          new SwerveModule(1, DriveConstants.Mod1.constants),
+          new SwerveModule(2, DriveConstants.Mod2.constants),
+          new SwerveModule(3, DriveConstants.Mod3.constants)
         };
 
     /* By pausing init for a second before setting module offsets, we avoid a bug with inverting motors.
@@ -42,18 +42,18 @@ public class Swerve extends SubsystemBase {
     resetModulesToAbsolute();
 
     swerveOdometry =
-        new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw(), getModulePositions());
+        new SwerveDriveOdometry(DriveConstants.kDriveKinematics, getYaw(), getModulePositions());
   }
 
   public void drive(
       Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
     SwerveModuleState[] swerveModuleStates =
-        Constants.Swerve.swerveKinematics.toSwerveModuleStates(
+        DriveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(
                     translation.getX(), translation.getY(), rotation, getYaw())
                 : new ChassisSpeeds(translation.getX(), translation.getY(), rotation));
-    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
+    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
 
     for (SwerveModule mod : mSwerveMods) {
       mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
@@ -62,7 +62,7 @@ public class Swerve extends SubsystemBase {
 
   /* Used by SwerveControllerCommand in Auto */
   public void setModuleStates(SwerveModuleState[] desiredStates) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed);
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
 
     for (SwerveModule mod : mSwerveMods) {
       mod.setDesiredState(desiredStates[mod.moduleNumber], false);
@@ -98,7 +98,7 @@ public class Swerve extends SubsystemBase {
   }
 
   public Rotation2d getYaw() {
-    return (Constants.Swerve.invertGyro)
+    return (DriveConstants.invertGyro)
         ? Rotation2d.fromDegrees(360 - gyro.getYaw())
         : Rotation2d.fromDegrees(gyro.getYaw());
   }

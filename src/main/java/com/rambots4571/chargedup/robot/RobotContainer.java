@@ -1,7 +1,7 @@
 package com.rambots4571.chargedup.robot;
 
-import com.rambots4571.chargedup.robot.commands.TeleopSwerve;
-import com.rambots4571.chargedup.robot.subsystems.Swerve;
+import com.rambots4571.chargedup.robot.commands.SwerveDriveCommand;
+import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -37,12 +37,12 @@ public class RobotContainer {
       new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
 
   /* Subsystems */
-  private final Swerve s_Swerve = new Swerve();
+  private final DriveTrain s_Swerve = new DriveTrain();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     s_Swerve.setDefaultCommand(
-        new TeleopSwerve(
+        new SwerveDriveCommand(
             s_Swerve,
             () -> -driver.getRawAxis(translationAxis),
             () -> -driver.getRawAxis(strafeAxis),
