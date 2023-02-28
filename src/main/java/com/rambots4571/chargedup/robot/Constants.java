@@ -155,6 +155,13 @@ public final class Constants {
     public static final int GAMEPAD = 2;
     public static final double STICK_DEADBAND = 0.1;
 
+    ///////////////// PHOTONVISION /////////////////
+    //TODO: Get real values for all ts
+    public static final double CAMERA_HEIGHT_METERS = 0.5;
+    public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(90);
+    public static final double TARGET_HEIGHT_METERS = 0.5;
+    public static final double GOAL_RANGE_METERS = Units.inchesToMeters(6);
+
     ///////////////// AUTON /////////////////
 
     public static final Translation2d STARTING_TRANSLATION = new Translation2d();
