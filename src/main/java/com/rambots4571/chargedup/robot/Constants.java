@@ -1,6 +1,9 @@
 package com.rambots4571.chargedup.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
@@ -14,6 +17,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -147,7 +152,103 @@ public final class Constants {
     public static final PIDConstants rotationPID = new PIDConstants(angleKP, angleKI, angleKD);
   }
 
+  public static final class Cvator {
+    public static final int BASE_MOTOR_MASTER = 15;
+    public static final int BASE_MOTOR_FOLLOWER = 16;
+
+    public static final int LIMITSWITCH = 0;
+
+    public static final double rampRate = 0.15;
+
+    public static final NeutralMode MODE = NeutralMode.Brake;
+
+    public static final TalonFXInvertType masterInvert = TalonFXInvertType.Clockwise;
+    public static final TalonFXInvertType followerInvert = TalonFXInvertType.CounterClockwise;
+
+    // TODO: Tune Stator/Supply Limits
+    public static final StatorCurrentLimitConfiguration statorLimit =
+        new StatorCurrentLimitConfiguration(true, 40, 70, 2);
+
+    public static final SupplyCurrentLimitConfiguration supplyLimit =
+        new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
+
+    // TODO: Find and tune real values
+    public static final class ElevatorPIDF {
+
+      public static final double kP = 0;
+      public static final double kI = 0;
+      public static final double kD = 0;
+      public static final double kF = 0;
+    }
+
+    public static final double cruiseVel = 0; // u/100_ms
+    public static final double motionAccel = 0; // u/100_ms/s
+
+    @Getter
+    @AllArgsConstructor
+    public static enum Position {
+      BOTTOM(0, 0, 0),
+      MIDDLE(0, 0, 0),
+      TOP(0, 0, 0);
+      private final double cubeHeight, coneHeight, armlength;
+    }
+
+    public static enum PositionMode {
+      CONE,
+      CUBE
+    }
+  }
+
+  public static class ArmConstants {
+    public static final int ARM_MOTOR = 17;
+
+    public static final TalonFXInvertType INVERT = TalonFXInvertType.Clockwise; // TODO: Test this
+    public static final NeutralMode MODE = NeutralMode.Brake;
+
+    public static final StatorCurrentLimitConfiguration STATOR_LIMIT =
+        new StatorCurrentLimitConfiguration(true, 40, 70, 2);
+
+    public static final SupplyCurrentLimitConfiguration SUPPLY_LIMIT =
+        new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
+
+    public static final double RAMP_RATE = 0.15;
+
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double kF = 0;
+
+    public static final double cruiseVel = 3.0;
+    public static final double motionAccel = 4.0;
+  }
+
+  public static class CTurret {
+    public static final int TURRET_MOTOR = 18;
+
+    public static final TalonFXInvertType INVERT = TalonFXInvertType.Clockwise; // TODO: Test this
+    public static final NeutralMode MODE = NeutralMode.Brake;
+
+    public static final StatorCurrentLimitConfiguration STATOR_LIMIT =
+        new StatorCurrentLimitConfiguration(true, 40, 70, 2);
+
+    public static final SupplyCurrentLimitConfiguration SUPPLY_LIMIT =
+        new SupplyCurrentLimitConfiguration(true, 40, 60, 4);
+
+    public static final double RAMP_RATE = 0.15;
+    public static final double TURRET_SPEED = 0.5;
+
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double kF = 0;
+
+    public static final int LEFT_LIMIT_SWITCH = 1;
+    public static final int RIGHT_LIMIT_SWITCH = 2;
+  }
+
   public static final class Settings {
+    public static final double BALANCE_BEAM_DEGREES_GOAL = 0.0;
+    public static final int timeoutMs = 10;
 
     ///////////////// JOYSTICKS /////////////////
 
