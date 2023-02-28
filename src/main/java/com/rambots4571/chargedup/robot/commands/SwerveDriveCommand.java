@@ -1,7 +1,7 @@
 package com.rambots4571.chargedup.robot.commands;
 
-import com.rambots4571.chargedup.robot.Constants;
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
+import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.math.MathUtil;
@@ -39,9 +39,9 @@ public class SwerveDriveCommand extends CommandBase {
   @Override
   public void execute() {
     double translationVal =
-        MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.stickDeadband);
-    double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband);
-    double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
+        MathUtil.applyDeadband(translationSup.getAsDouble(), Settings.STICK_DEADBAND);
+    double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Settings.STICK_DEADBAND);
+    double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Settings.STICK_DEADBAND);
 
     driveTrain.drive(
         new Translation2d(translationVal, strafeVal).times(DriveConstants.kMaxSpeedMetersPerSecond),

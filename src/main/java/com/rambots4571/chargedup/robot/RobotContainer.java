@@ -1,81 +1,83 @@
 package com.rambots4571.chargedup.robot;
 
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.rambots4571.chargedup.robot.Constants.DriveConstants;
+import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.chargedup.robot.commands.SwerveDriveCommand;
 import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
+import com.rambots4571.rampage.controller.Gamepad;
+import com.rambots4571.rampage.controller.Gamepad.Button;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PS4Controller;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and button mappings) should be declared here.
- */
 public class RobotContainer {
-  /* Controllers */
-  private final Joystick driver = new Joystick(0);
+
+  // Joysticks
+  public final Gamepad driverController = new Gamepad(Settings.DRIVERCONTROLLER);
+  public final Gamepad gamepad = new Gamepad(Settings.GAMEPAD);
+
+  public final Trigger robotCentricToggle = driverController.getButton(Button.Y);
+
+  // Misceallaneous
+  public final SwerveAutoBuilder autoBuilder;
 
   public final SendableChooser<Command> autonChooser = new SendableChooser<>();
 
-  /* Drive Controls */
-  private final int translationAxis = PS4Controller.Axis.kLeftY.value;
-  private final int strafeAxis = PS4Controller.Axis.kLeftX.value;
-  private final int rotationAxis = PS4Controller.Axis.kRightX.value;
 
-  /* Driver Buttons */
-  private final JoystickButton zeroGyro =
-      new JoystickButton(driver, XboxController.Button.kY.value);
-  private final JoystickButton robotCentric =
-      new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+  // Subsystems 
+  private final DriveTrain driveTrain = new DriveTrain();
 
-  /* Subsystems */
-  private final DriveTrain s_Swerve = new DriveTrain();
+  // Commands
+  private final SwerveDriveCommand swerveDriveCommand;
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    s_Swerve.setDefaultCommand(
-        new SwerveDriveCommand(
-            s_Swerve,
-            () -> -driver.getRawAxis(translationAxis),
-            () -> -driver.getRawAxis(strafeAxis),
-            () -> -driver.getRawAxis(rotationAxis),
-            () -> robotCentric.getAsBoolean()));
+    //TODO: Controllers/Axis might be a failure point
+    swerveDriveCommand = new SwerveDriveCommand(
+        driveTrain,
+        () -> -driverController.getAxisValue(Gamepad.Axis.LeftYAxis),
+        () -> -driverController.getAxisValue(Gamepad.Axis.LeftXAxis),
+        () -> -driverController.getAxisValue(Gamepad.Axis.RightXAxis),
+        () -> robotCentricToggle.getAsBoolean());
+    
+    driveTrain.setDefaultCommand(swerveDriveCommand);
+        
+
+    // Other Such Stuff
+    autoBuilder =
+        new SwerveAutoBuilder(
+            driveTrain::getPose,
+            driveTrain::resetOdometry,
+            DriveConstants.kDriveKinematics,
+            DriveConstants.tranlationPID,
+            DriveConstants.rotationPID,
+            driveTrain::setModuleStates,
+            Settings.eventMap,
+            driveTrain);
 
     autonChooser.addOption("Bare Wasteman", null);
 
     SmartDashboard.putData("Auton Chooser", autonChooser);
 
     // Shitposts written by : Karol K from team 3017 The Patriots
-    // Configure the button bindings
     configureButtonBindings();
   }
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
   private void configureButtonBindings() {
-    /* Driver Buttons */
-    zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+    // (Driver) Y -> Reset Gyro
+    driverController.getButton(Button.Y).onTrue(zeroGyro());
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
+  private Command zeroGyro() {
+    return new InstantCommand(driveTrain::zeroGyro, driveTrain);
+  }
+
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
     return null;
   }
 }

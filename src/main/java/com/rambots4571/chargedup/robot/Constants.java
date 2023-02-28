@@ -8,6 +8,7 @@ import com.pathplanner.lib.auto.PIDConstants;
 import com.rambots4571.chargedup.robot.lib.util.COTSFalconSwerveConstants;
 import com.rambots4571.chargedup.robot.lib.util.SwerveModuleConstants;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -18,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public final class Constants {
-  public static final double stickDeadband = 0.1;
 
   public static final class DriveConstants {
     ///////////////// CAN IDs /////////////////
@@ -145,6 +145,24 @@ public final class Constants {
 
     public static final PIDConstants tranlationPID = new PIDConstants(driveKP, driveKI, driveKD);
     public static final PIDConstants rotationPID = new PIDConstants(angleKP, angleKI, angleKD);
+  }
+
+  public static final class Settings {
+
+    ///////////////// JOYSTICKS /////////////////
+
+    public static final int DRIVERCONTROLLER = 3;
+    public static final int GAMEPAD = 2;
+    public static final double STICK_DEADBAND = 0.1;
+
+    ///////////////// AUTON /////////////////
+
+    public static final Translation2d STARTING_TRANSLATION = new Translation2d();
+    public static final Rotation2d STARTING_ANGLE = new Rotation2d();
+
+    public static final Pose2d STARTING_POSITION = new Pose2d(STARTING_TRANSLATION, STARTING_ANGLE);
+
+    public static HashMap<String, Command> eventMap = new HashMap<String, Command>();
   }
 
   public static final class AutoPaths {
