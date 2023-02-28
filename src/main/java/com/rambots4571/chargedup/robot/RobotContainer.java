@@ -8,7 +8,7 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Constants.Settings;
-import com.rambots4571.chargedup.robot.commands.SwerveDriveCommand;
+import com.rambots4571.chargedup.robot.commands.drive.SwerveDriveCommand;
 import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;

@@ -35,15 +35,16 @@ public class DriveTrain extends SubsystemBase {
           new SwerveModule(3, DriveConstants.Mod3.constants)
         };
 
-    /* By pausing init for a second before setting module offsets, we avoid a bug with inverting motors.
-     * See https://github.com/Team364/BaseFalconSwerve/issues/8 for more info.
-     */
     Timer.delay(1.0);
     resetModulesToAbsolute();
 
     swerveOdometry =
-        new SwerveDriveOdometry(DriveConstants.kDriveKinematics, getYaw(), getModulePositions());
+        new SwerveDriveOdometry(DriveConstants.kDriveKinematics, getRotation2d(), getModulePositions());
   }
+
+  // *****************************************
+  // ************** Driving ******************
+  // *****************************************
 
   public void drive(
       Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -51,7 +52,7 @@ public class DriveTrain extends SubsystemBase {
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(
-                    translation.getX(), translation.getY(), rotation, getYaw())
+                    translation.getX(), translation.getY(), rotation, getRotation2d())
                 : new ChassisSpeeds(translation.getX(), translation.getY(), rotation));
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
 
@@ -60,7 +61,6 @@ public class DriveTrain extends SubsystemBase {
     }
   }
 
-  /* Used by SwerveControllerCommand in Auto */
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
 
@@ -69,38 +69,13 @@ public class DriveTrain extends SubsystemBase {
     }
   }
 
-  public Pose2d getPose() {
-    return swerveOdometry.getPoseMeters();
-  }
+  public SwerveModulePosition[] getModulePositions() {
+    SwerveModulePosition[] states = new SwerveModulePosition[4];
 
-  public void resetOdometry(Pose2d pose) {
-    swerveOdometry.resetPosition(getYaw(), getModulePositions(), pose);
-  }
-
-  public SwerveModuleState[] getModuleStates() {
-    SwerveModuleState[] states = new SwerveModuleState[4];
     for (SwerveModule mod : mSwerveMods) {
-      states[mod.moduleNumber] = mod.getState();
+      states[mod.moduleNumber] = mod.getPosition();
     }
     return states;
-  }
-
-  public SwerveModulePosition[] getModulePositions() {
-    SwerveModulePosition[] positions = new SwerveModulePosition[4];
-    for (SwerveModule mod : mSwerveMods) {
-      positions[mod.moduleNumber] = mod.getPosition();
-    }
-    return positions;
-  }
-
-  public void zeroGyro() {
-    gyro.setYaw(0);
-  }
-
-  public Rotation2d getYaw() {
-    return (DriveConstants.invertGyro)
-        ? Rotation2d.fromDegrees(360 - gyro.getYaw())
-        : Rotation2d.fromDegrees(gyro.getYaw());
   }
 
   public void resetModulesToAbsolute() {
@@ -109,9 +84,53 @@ public class DriveTrain extends SubsystemBase {
     }
   }
 
+  public void stopMotors() {
+    for (SwerveModule mod : mSwerveMods) {
+      mod.stopMotors();
+    }
+  }
+
+  // *****************************************
+  // ************* Robot Angle ***************
+  // *****************************************
+
+  public double getGyroAngle() {
+    return gyro.getYaw() % 360;
+  }
+
+  public double getGyroPitch() {
+    return gyro.getPitch();
+  }
+
+  public Rotation2d getRotation2d() {
+    return (DriveConstants.invertGyro)
+        ? Rotation2d.fromDegrees(360 - gyro.getYaw())
+        : Rotation2d.fromDegrees(gyro.getYaw());
+  }
+
+  public void zeroGyro() {
+    gyro.setYaw(0);
+  }
+
+  // *****************************************
+  // ************* Robot Angle ***************
+  // *****************************************
+
+  public void updateOdometry() {
+    swerveOdometry.update(getRotation2d(), getModulePositions());
+  }
+
+  public void resetOdometry(Pose2d pose) {
+    swerveOdometry.resetPosition(getRotation2d(), getModulePositions(), pose);
+  }
+
+  public Pose2d getPose() {
+    return swerveOdometry.getPoseMeters();
+  }
+
   @Override
   public void periodic() {
-    swerveOdometry.update(getYaw(), getModulePositions());
+    swerveOdometry.update(getRotation2d(), getModulePositions());
 
     for (SwerveModule mod : mSwerveMods) {
       SmartDashboard.putNumber(

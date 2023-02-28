@@ -47,7 +47,6 @@ public class SwerveModule {
   }
 
   public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
-    /* This is a custom optimize function, since default WPILib optimize assumes continuous controller which CTRE and Rev onboard is not */
     desiredState = CTREModuleState.optimize(desiredState, getState().angle);
     setAngle(desiredState);
     setSpeed(desiredState, isOpenLoop);
@@ -76,7 +75,7 @@ public class SwerveModule {
         (Math.abs(desiredState.speedMetersPerSecond) <= (DriveConstants.kMaxSpeedMetersPerSecond * 0.01))
             ? lastAngle
             : desiredState
-                .angle; // Prevent rotating module if speed is less then 1%. Prevents Jittering.
+                .angle; 
 
     turnMotor.set(
         ControlMode.Position,
@@ -140,5 +139,10 @@ public class SwerveModule {
             DriveConstants.kWheelCircumference,
             DriveConstants.driveGearRatio),
         getAngle());
+  }
+
+  public void stopMotors() {
+    turnMotor.set(ControlMode.PercentOutput, 0);
+    driveMotor.set(ControlMode.PercentOutput, 0);
   }
 }

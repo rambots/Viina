@@ -1,4 +1,4 @@
-package com.rambots4571.chargedup.robot.commands;
+package com.rambots4571.chargedup.robot.commands.drive;
 
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Constants.Settings;
