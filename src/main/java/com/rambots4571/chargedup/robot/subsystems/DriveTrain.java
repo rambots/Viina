@@ -18,9 +18,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveTrain extends SubsystemBase {
+  
   public SwerveDriveOdometry swerveOdometry;
   public SwerveModule[] mSwerveMods;
   public Pigeon2 gyro;
+
+  private static DriveTrain instance = new DriveTrain();
+
+  public static DriveTrain getInstance() {
+    return instance;
+  }
 
   public DriveTrain() {
     gyro = new Pigeon2(DriveConstants.pigeonID, "BOYSALIAR");
