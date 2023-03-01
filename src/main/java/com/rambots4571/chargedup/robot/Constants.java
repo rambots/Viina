@@ -1,5 +1,8 @@
 package com.rambots4571.chargedup.robot;
 
+import com.rambots4571.rampage.swerve.COTSFalconSwerveConstants;
+import com.rambots4571.rampage.swerve.SwerveModuleConstants;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -8,20 +11,17 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 
-import com.rambots4571.chargedup.robot.lib.util.COTSFalconSwerveConstants;
-import com.rambots4571.chargedup.robot.lib.util.SwerveModuleConstants;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 public final class Constants {
 
@@ -29,57 +29,55 @@ public final class Constants {
     ///////////////// CAN IDs /////////////////
 
     /* Front Left Module - Module 0 */
-    public static final class Mod0 { 
-        public static final int driveMotorID = 2;
-        public static final int angleMotorID = 3;
-        public static final int canCoderID = 4;
-        public static final Rotation2d angleOffset = Rotation2d.fromDegrees(353.8);
-        public static final SwerveModuleConstants constants =
-            new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
-      }
-  
-      /* Front Right Module - Module 1 */
-      public static final class Mod1 { 
-        public static final int driveMotorID = 5;
-        public static final int angleMotorID = 6;
-        public static final int canCoderID = 7;
-        public static final Rotation2d angleOffset = Rotation2d.fromDegrees(23.6);
-        public static final SwerveModuleConstants constants =
-            new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
-      }
-  
-      /* Back Left Module - Module 2 */
-      public static final class Mod2 { 
-        public static final int driveMotorID = 8;
-        public static final int angleMotorID = 9;
-        public static final int canCoderID = 10;
-        public static final Rotation2d angleOffset = Rotation2d.fromDegrees(235);
-        public static final SwerveModuleConstants constants =
-            new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
-      }
-  
-      /* Back Right Module - Module 3 */
-      public static final class Mod3 { 
-        public static final int driveMotorID = 11;
-        public static final int angleMotorID = 12;
-        public static final int canCoderID = 13;
-        public static final Rotation2d angleOffset = Rotation2d.fromDegrees(349.5);
-        public static final SwerveModuleConstants constants =
-            new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
-      }
+    public static final class Mod0 {
+      public static final int driveMotorID = 2;
+      public static final int angleMotorID = 3;
+      public static final int canCoderID = 4;
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(353.8);
+      public static final SwerveModuleConstants constants =
+          new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
+    }
+
+    /* Front Right Module - Module 1 */
+    public static final class Mod1 {
+      public static final int driveMotorID = 5;
+      public static final int angleMotorID = 6;
+      public static final int canCoderID = 7;
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(23.6);
+      public static final SwerveModuleConstants constants =
+          new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
+    }
+
+    /* Back Left Module - Module 2 */
+    public static final class Mod2 {
+      public static final int driveMotorID = 8;
+      public static final int angleMotorID = 9;
+      public static final int canCoderID = 10;
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(235);
+      public static final SwerveModuleConstants constants =
+          new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
+    }
+
+    /* Back Right Module - Module 3 */
+    public static final class Mod3 {
+      public static final int driveMotorID = 11;
+      public static final int angleMotorID = 12;
+      public static final int canCoderID = 13;
+      public static final Rotation2d angleOffset = Rotation2d.fromDegrees(349.5);
+      public static final SwerveModuleConstants constants =
+          new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
+    }
 
     public static final int pigeonID = 14;
 
     ///////////////// PHYSICAL CHARACTERISTICS /////////////////
-    public static final COTSFalconSwerveConstants chosenModule = 
+    public static final COTSFalconSwerveConstants chosenModule =
         COTSFalconSwerveConstants.SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4i_L2);
 
-    public static final double kTrackWidth =
-        Units.inchesToMeters(27); 
-    public static final double kWheelBase =
-        Units.inchesToMeters(27); 
+    public static final double kTrackWidth = Units.inchesToMeters(27);
+    public static final double kWheelBase = Units.inchesToMeters(27);
 
-    public static final double kWheelCircumference = chosenModule.wheelCircumference;
+    public static final double kWheelCircumference = chosenModule.getCircumference();
 
     /* Swerve Kinematics */
     public static final SwerveDriveKinematics kDriveKinematics =
@@ -90,18 +88,18 @@ public final class Constants {
             new Translation2d(-kWheelBase / 2.0, -kTrackWidth / 2.0));
 
     /* Module Gear Ratios */
-    public static final double driveGearRatio = chosenModule.driveGearRatio;
-    public static final double angleGearRatio = chosenModule.angleGearRatio;
+    public static final double driveGearRatio = chosenModule.getDriveGearRatio();
+    public static final double angleGearRatio = chosenModule.getAngleGearRatio();
 
     /* Motor Inverts */
-    public static final boolean angleMotorInvert = chosenModule.angleMotorInvert;
+    public static final boolean angleMotorInvert = chosenModule.isAngleMotorInvert();
     public static final boolean driveMotorInvert = true;
-    
+
     /* Gyro Invert */
     public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
     /* Angle Encoder Invert */
-    public static final boolean canCoderInvert = chosenModule.canCoderInvert;
+    public static final boolean canCoderInvert = chosenModule.isCanCoderInvert();
 
     /* Swerve Current Limiting */
     public static final int angleContinuousCurrentLimit = 25;
@@ -121,9 +119,9 @@ public final class Constants {
 
     /* Angle Motor PID Values */
     public static final double angleKP = 0.16;
-    public static final double angleKI = chosenModule.angleKI;
-    public static final double angleKD = chosenModule.angleKD;
-    public static final double angleKF = chosenModule.angleKF;
+    public static final double angleKI = chosenModule.getAngleKI();
+    public static final double angleKD = chosenModule.getAngleKD();
+    public static final double angleKF = chosenModule.getAngleKF();
 
     /* Drive Motor PID Values */
     public static final double driveKP = 0.15; // TODO: Tuned but further tuning is better
@@ -139,7 +137,8 @@ public final class Constants {
 
     /* Swerve Profiling Values */
     /** Meters per Second */
-    public static final double kMaxSpeedMetersPerSecond = 4.5; // TODO: This must be tuned to specific robot
+    public static final double kMaxSpeedMetersPerSecond =
+        4.5; // TODO: This must be tuned to specific robot
     /** Radians per Second */
     public static final double kMaxAngularSpeedRadiansPerSecond =
         10.0; // TODO: This must be tuned to specific robot
@@ -257,7 +256,7 @@ public final class Constants {
     public static final double STICK_DEADBAND = 0.1;
 
     ///////////////// PHOTONVISION /////////////////
-    //TODO: Get real values for all ts
+    // TODO: Get real values for all ts
     public static final double CAMERA_HEIGHT_METERS = 0.5;
     public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(90);
     public static final double TARGET_HEIGHT_METERS = 0.5;

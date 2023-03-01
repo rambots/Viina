@@ -4,8 +4,8 @@
 
 package com.rambots4571.chargedup.robot;
 
-import com.rambots4571.chargedup.robot.lib.util.CTREConfigs;
 import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
+import com.rambots4571.chargedup.robot.utils.CTREConfigs;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,7 +23,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     ctreConfigs = new CTREConfigs();
-    
+
     container = new RobotContainer();
 
     driveTrain = new DriveTrain();

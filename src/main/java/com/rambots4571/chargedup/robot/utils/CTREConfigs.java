@@ -1,4 +1,4 @@
-package com.rambots4571.chargedup.robot.lib.util;
+package com.rambots4571.chargedup.robot.utils;
 
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
@@ -6,8 +6,8 @@ import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.SensorTimeBase;
-import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 
+import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 
 public final class CTREConfigs {
   public TalonFXConfiguration swerveAngleFXConfig;

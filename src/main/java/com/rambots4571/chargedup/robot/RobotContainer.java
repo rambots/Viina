@@ -3,9 +3,9 @@ package com.rambots4571.chargedup.robot;
 import com.rambots4571.rampage.command.RunEndCommand;
 import com.rambots4571.rampage.controller.Gamepad;
 import com.rambots4571.rampage.controller.PS4Controller;
-import com.rambots4571.rampage.controller.Gamepad.Axis;
 import com.rambots4571.rampage.controller.PS4Controller.Button;
 import com.rambots4571.rampage.controller.component.DPadButton.Direction;
+
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
@@ -53,7 +53,6 @@ public class RobotContainer {
   private final TestArmCommand testArmCommand;
   private final BalanceOnBeam balanceOnBeam;
 
-
   public RobotContainer() {
     driveTrain = DriveTrain.getInstance();
     elevator = Elevator.getInstance();
@@ -80,12 +79,10 @@ public class RobotContainer {
     // TODO: uncomment to test elevator
     elevator.setDefaultCommand(testElevatorCommand);
 
-    testArmCommand = 
-        new TestArmCommand(
-            arm, () -> gamepad.getAxisValue(Gamepad.Axis.RightXAxis));
+    testArmCommand = new TestArmCommand(arm, () -> gamepad.getAxisValue(Gamepad.Axis.RightXAxis));
 
     // TODO: uncomment to test arm
-    arm.setDefaultCommand(testArmCommand); 
+    arm.setDefaultCommand(testArmCommand);
 
     // Other Such Stuff
     autoBuilder =
@@ -142,7 +139,6 @@ public class RobotContainer {
     driverController.getButton(PS4Controller.Button.R1).whileTrue(balanceOnBeam);
   }
 
-  
   public Command getAutonomousCommand() {
     return autonChooser.getSelected();
   }
@@ -150,6 +146,7 @@ public class RobotContainer {
   private Command zeroGyro() {
     return new InstantCommand(driveTrain::zeroGyro, driveTrain);
   }
+
   private Command togglePositionMode() {
     return new InstantCommand(scoringState::toggleMode, elevator, arm);
   }
