@@ -48,7 +48,7 @@ public class TestArmCommand extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    arm.stop();
+    arm.stopArm();
   }
 
   @Override

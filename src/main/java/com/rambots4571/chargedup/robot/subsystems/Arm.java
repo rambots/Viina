@@ -2,21 +2,28 @@ package com.rambots4571.chargedup.robot.subsystems;
 
 import com.rambots4571.rampage.motor.TalonPID;
 
+import java.util.Arrays;
+import java.util.List;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import com.rambots4571.chargedup.robot.Constants.ArmConstants;
+import com.rambots4571.chargedup.robot.Constants.ArmConstants.pivotPIDF;
 import com.rambots4571.chargedup.robot.Constants.Settings;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
 
-  private final WPI_TalonFX armMotor;
-  private final TalonPID armMotorController;
-  private double desiredLength;
+  private final WPI_TalonFX armMotor, pivotMotor;
+  private final List<WPI_TalonFX> allMotors;
+
+  private final TalonPID armMotorController, pivotMotorController;
+  private double desiredLength, desiredAngle;
 
   private static Arm instance = new Arm();
 
@@ -25,31 +32,40 @@ public class Arm extends SubsystemBase {
   }
 
   public Arm() {
-    armMotor = new WPI_TalonFX(ArmConstants.ARM_MOTOR);
+    armMotor = new WPI_TalonFX(ArmConstants.ARM_MOTOR, "BOYSALIAR");
+    pivotMotor = new WPI_TalonFX(ArmConstants.PIVOT_MOTOR, "BOYSALIAR");
+
+    allMotors = Arrays.asList(armMotor, pivotMotor);
 
     armMotorController = new TalonPID(armMotor);
     armMotorController.setPIDF(ArmConstants.kP, ArmConstants.kI, ArmConstants.kD, ArmConstants.kF);
 
-    addChild("Arm Motor PID", armMotorController.getTuner());
+    pivotMotorController = new TalonPID(pivotMotor);
+    pivotMotorController.setPIDF(pivotPIDF.kP, pivotPIDF.kI, pivotPIDF.kD, pivotPIDF.kF);
 
-    configMotor();
+    addChild("Arm Motor PID", armMotorController.getTuner());
+    addChild("Pivot Motor PID", pivotMotorController.getTuner());
+
+    configMotors();
 
     configMotionMagic();
   }
 
-  public void configMotor() {
-    armMotor.configFactoryDefault();
+  public void configMotors() {
+    allMotors.forEach(motor -> {
+        motor.configFactoryDefault();
 
-    armMotor.setInverted(ArmConstants.INVERT);
-    armMotor.setNeutralMode(ArmConstants.MODE);
+        motor.setInverted(ArmConstants.INVERT);
+        motor.setNeutralMode(ArmConstants.MODE);
 
-    armMotor.configSupplyCurrentLimit(ArmConstants.SUPPLY_LIMIT);
-    armMotor.configStatorCurrentLimit(ArmConstants.STATOR_LIMIT);
+        motor.configSupplyCurrentLimit(ArmConstants.SUPPLY_LIMIT);
+        motor.configStatorCurrentLimit(ArmConstants.STATOR_LIMIT);
 
-    armMotor.configOpenloopRamp(ArmConstants.RAMP_RATE, Settings.timeoutMs);
+        motor.configOpenloopRamp(ArmConstants.RAMP_RATE, Settings.timeoutMs);
 
-    armMotor.enableVoltageCompensation(true);
-    armMotor.configVoltageCompSaturation(12, Settings.timeoutMs);
+        motor.enableVoltageCompensation(true);
+        motor.configVoltageCompSaturation(12, Settings.timeoutMs);
+    });
   }
 
   public void configMotionMagic() {
@@ -63,6 +79,10 @@ public class Arm extends SubsystemBase {
     armMotor.configMotionCruiseVelocity(ArmConstants.cruiseVel, Settings.timeoutMs);
     armMotor.configMotionAcceleration(ArmConstants.motionAccel, Settings.timeoutMs);
   }
+
+  // *****************************************
+  // ************** Arm Motor ****************
+  // *****************************************
 
   /**
    * Set the length you want the arm to extend
@@ -86,7 +106,7 @@ public class Arm extends SubsystemBase {
     armMotor.set(value);
   }
 
-  public void stop() {
+  public void stopArm() {
     armMotor.set(0);
   }
 
@@ -98,8 +118,40 @@ public class Arm extends SubsystemBase {
     return armMotor.getSelectedSensorPosition();
   }
 
+  // *****************************************
+  // **************** Pivot ******************
+  // *****************************************
+
+  /**
+   * Set the pivot of the arm
+   *
+   * @param raw encoder ticks
+   */
+  public void setAngle(double raw) {
+    pivotMotor.set(ControlMode.Position, raw);
+  }
+
+  /**
+   * Updates the desired angle which is set inside periodic()`
+   *
+   * @param desiredLength
+   */
+  public void setDesiredAngle(double desiredAngle) {
+    this.desiredAngle = desiredAngle;
+  }
+
+  // For testing purposes only
+  public void setPivot(double speed) {
+    pivotMotor.set(speed * 0.3);
+  }
+
+  public void stopPivot() {
+    pivotMotor.set(0);
+  }
+
   @Override
   public void periodic() {
     // setLength(desiredLength);
+    // setAngle(desiredAngle)
   }
 }

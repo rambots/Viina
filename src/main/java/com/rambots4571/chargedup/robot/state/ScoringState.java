@@ -82,7 +82,7 @@ public class ScoringState {
 
   public void stop() {
     elevator.stopMotors();
-    arm.stop();
+    arm.stopArm();
   }
 
   public void toggleMode() {

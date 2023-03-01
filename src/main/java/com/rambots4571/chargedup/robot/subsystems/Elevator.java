@@ -1,5 +1,7 @@
 package com.rambots4571.chargedup.robot.subsystems;
 
+import com.rambots4571.rampage.motor.TalonPID;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
@@ -9,7 +11,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.rambots4571.chargedup.robot.Constants.Cvator;
 import com.rambots4571.chargedup.robot.Constants.Cvator.ElevatorPIDF;
 import com.rambots4571.chargedup.robot.Constants.Settings;
-import com.rambots4571.rampage.motor.TalonPID;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -30,8 +31,8 @@ public class Elevator extends SubsystemBase {
   }
 
   private Elevator() {
-    baseMotorMaster = new WPI_TalonFX(Cvator.BASE_MOTOR_MASTER);
-    baseMotorFollower = new WPI_TalonFX(Cvator.BASE_MOTOR_FOLLOWER);
+    baseMotorMaster = new WPI_TalonFX(Cvator.BASE_MOTOR_MASTER, "BOYSALIAR");
+    baseMotorFollower = new WPI_TalonFX(Cvator.BASE_MOTOR_FOLLOWER, "BOYSALIAR");
 
     List.of(baseMotorMaster, baseMotorFollower)
         .forEach(

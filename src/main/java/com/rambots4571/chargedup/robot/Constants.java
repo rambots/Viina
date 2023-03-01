@@ -200,8 +200,11 @@ public final class Constants {
 
   public static class ArmConstants {
     public static final int ARM_MOTOR = 17;
+    public static final int PIVOT_MOTOR = 18;
 
-    public static final TalonFXInvertType INVERT = TalonFXInvertType.Clockwise; // TODO: Test this
+    public static final TalonFXInvertType INVERT =
+        TalonFXInvertType.Clockwise; // TODO: Test this
+        
     public static final NeutralMode MODE = NeutralMode.Brake;
 
     public static final StatorCurrentLimitConfiguration STATOR_LIMIT =
@@ -216,6 +219,13 @@ public final class Constants {
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kF = 0;
+
+    public static final class pivotPIDF {
+      public static final double kP = 0;
+      public static final double kI = 0;
+      public static final double kD = 0;
+      public static final double kF = 0;
+    }
 
     public static final double cruiseVel = 3.0;
     public static final double motionAccel = 4.0;
