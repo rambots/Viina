@@ -20,8 +20,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import java.util.HashMap;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 public final class Constants {
 
@@ -183,15 +181,6 @@ public final class Constants {
     public static final double cruiseVel = 0; // u/100_ms
     public static final double motionAccel = 0; // u/100_ms/s
 
-    @Getter
-    @AllArgsConstructor
-    public static enum Position {
-      BOTTOM(0, 0, 0),
-      MIDDLE(0, 0, 0),
-      TOP(0, 0, 0);
-      private final double cubeHeight, coneHeight, armlength;
-    }
-
     public static enum PositionMode {
       CONE,
       CUBE
@@ -202,9 +191,8 @@ public final class Constants {
     public static final int ARM_MOTOR = 17;
     public static final int PIVOT_MOTOR = 18;
 
-    public static final TalonFXInvertType INVERT =
-        TalonFXInvertType.Clockwise; // TODO: Test this
-        
+    public static final TalonFXInvertType INVERT = TalonFXInvertType.Clockwise; // TODO: Test this
+
     public static final NeutralMode MODE = NeutralMode.Brake;
 
     public static final StatorCurrentLimitConfiguration STATOR_LIMIT =

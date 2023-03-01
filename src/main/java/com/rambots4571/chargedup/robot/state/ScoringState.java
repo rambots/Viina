@@ -1,41 +1,47 @@
 package com.rambots4571.chargedup.robot.state;
 
-import com.rambots4571.chargedup.robot.Constants.Cvator.Position;
 import com.rambots4571.chargedup.robot.Constants.Cvator.PositionMode;
 import com.rambots4571.chargedup.robot.subsystems.Arm;
 import com.rambots4571.chargedup.robot.subsystems.Elevator;
 
-import java.util.function.Function;
+import lombok.Value;
 
 public class ScoringState {
+  @Value
+  public static class Position {
+    private double height; // raw units
+    private double armLength; // raw units
+    private double elbowAngle; // rads or degrees
+  }
+
   private final Elevator elevator;
   private final Arm arm;
+
+  private static final Position[] cubePositions =
+      new Position[] {new Position(0, 0, 0), new Position(0, 0, 0), new Position(0, 0, 0)};
+
+  private static final Position[] conePositions =
+      new Position[] {new Position(0, 0, 0), new Position(0, 0, 0), new Position(0, 0, 0)};
+
+  private Position[] currPositions;
 
   // starting position mode
   private PositionMode mode = PositionMode.CONE;
 
-  private final Position[] positions =
-      new Position[] {
-        Position.BOTTOM, Position.MIDDLE, Position.TOP,
-      };
-
   private int index = 0;
-
-  private Function<Position, Double> getHeight;
 
   public ScoringState(Elevator elevator, Arm arm) {
     this.elevator = elevator;
     this.arm = arm;
-
-    getHeight = mode == PositionMode.CONE ? pos -> pos.getConeHeight() : pos -> pos.getCubeHeight();
+    currPositions = mode == PositionMode.CONE ? conePositions : cubePositions;
   }
 
   public Position currPosition() {
-    return positions[index];
+    return currPositions[index];
   }
 
   public void stepUp() {
-    if (index == positions.length - 1) return;
+    if (index == currPositions.length - 1) return;
     index++;
     updatePostion();
   }
@@ -47,7 +53,7 @@ public class ScoringState {
   }
 
   public void maxPos() {
-    index = positions.length - 1;
+    index = currPositions.length - 1;
     updatePostion();
   }
 
@@ -56,42 +62,50 @@ public class ScoringState {
     updatePostion();
   }
 
-  public void setState(Position pos, PositionMode mode) {
-    double height = mode == PositionMode.CONE ? pos.getConeHeight() : pos.getCubeHeight();
-    setState(height, pos.getArmlength());
+  public void setState(Position pos) {
+    setState(pos.height, pos.armLength, pos.elbowAngle);
   }
 
-  public void setState(double height, double length) {
+  public void setState(double height, double length, double angle) {
     elevator.setDesiredHeight(length);
     arm.setDesiredLength(length);
+    // TODO: make sure to convert angle to raw
+    arm.setDesiredAngle(angle);
   }
 
   /** Updates the desired postions in each subsystem which will be set inside their periodic() */
   public void updatePostion() {
     Position pos = currPosition();
-    elevator.setDesiredHeight(getHeight.apply(pos));
-    arm.setDesiredLength(pos.getArmlength());
+    elevator.setDesiredHeight(pos.height);
+    arm.setDesiredLength(pos.armLength);
+    // TODO: make sure to convert angle to raw
+    arm.setDesiredAngle(pos.elbowAngle);
   }
 
   /** Manually go to position (mostly for testing) without the periodic */
   public void goToPosition() {
     Position pos = currPosition();
-    elevator.setHeight(getHeight.apply(pos));
-    arm.setLength(pos.getArmlength());
+    elevator.setHeight(pos.height);
+    arm.setLength(pos.armLength);
+    // TODO: make sure to convert angle to raw
+    arm.setAngle(pos.elbowAngle);
   }
 
   public void stop() {
     elevator.stopMotors();
     arm.stopArm();
+    arm.stopPivot();
   }
 
   public void toggleMode() {
     if (mode == PositionMode.CONE) {
-      getHeight = pos -> pos.getCubeHeight();
+      currPositions = cubePositions;
       mode = PositionMode.CUBE;
     } else {
-      getHeight = pos -> pos.getConeHeight();
+      currPositions = conePositions;
       mode = PositionMode.CONE;
     }
+    // prevent index out of bound
+    index = index >= currPositions.length ? currPositions.length - 1 : index;
   }
 }
