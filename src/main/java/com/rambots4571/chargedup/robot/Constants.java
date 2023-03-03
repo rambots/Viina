@@ -243,6 +243,10 @@ public final class Constants {
     public static final int RIGHT_LIMIT_SWITCH = 2;
   }
 
+  public static final class ClawConstants {
+    public static final int WRIST_MOTOR = 19;
+  }
+
   public static final class Settings {
     public static final double BALANCE_BEAM_DEGREES_GOAL = 0.0;
     public static final int timeoutMs = 10;
