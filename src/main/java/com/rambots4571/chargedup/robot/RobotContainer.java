@@ -11,6 +11,7 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.chargedup.robot.commands.arm.TestArmCommand;
+import com.rambots4571.chargedup.robot.commands.arm.TestClaw;
 import com.rambots4571.chargedup.robot.commands.drive.BalanceOnBeam;
 import com.rambots4571.chargedup.robot.commands.drive.SwerveDriveCommand;
 import com.rambots4571.chargedup.robot.commands.elevator.TestElevatorCommand;
@@ -149,6 +150,8 @@ public class RobotContainer {
                   claw.stop();
                 },
                 claw));
+
+    gamepad.getButton(Gamepad.Button.Y).whileTrue(new TestClaw(claw));
 
     // (Driver) Right Bumper -> Balance on Beam
     driverController.getButton(PS4Controller.Button.R1).whileTrue(balanceOnBeam);

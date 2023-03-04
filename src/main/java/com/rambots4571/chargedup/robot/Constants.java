@@ -3,6 +3,7 @@ package com.rambots4571.chargedup.robot;
 import com.rambots4571.rampage.swerve.COTSFalconSwerveConstants;
 import com.rambots4571.rampage.swerve.SwerveModuleConstants;
 
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -244,7 +245,16 @@ public final class Constants {
   }
 
   public static final class ClawConstants {
-    public static final int WRIST_MOTOR = 19;
+    public static final int LEFT_WRIST_MOTOR = 19;
+    public static final int RIGHT_WRIST_MOTOR = 20;
+    public static final int INTAKE_MOTOR = 21;
+
+    public static final IdleMode MODE = IdleMode.kBrake;
+
+    public static final boolean WRIST_INVERSION = true;
+    // Amps
+    public static final int FULL_NEO_LIMIT = 50;
+    public static final int NEO_550_LIMIT = 20;
   }
 
   public static final class Settings {
