@@ -14,12 +14,10 @@ import com.rambots4571.chargedup.robot.commands.arm.TestArmCommand;
 import com.rambots4571.chargedup.robot.commands.arm.TestClaw;
 import com.rambots4571.chargedup.robot.commands.drive.BalanceOnBeam;
 import com.rambots4571.chargedup.robot.commands.drive.SwerveDriveCommand;
-import com.rambots4571.chargedup.robot.commands.elevator.TestElevatorCommand;
 import com.rambots4571.chargedup.robot.state.ScoringState;
 import com.rambots4571.chargedup.robot.subsystems.Arm;
 import com.rambots4571.chargedup.robot.subsystems.Claw;
 import com.rambots4571.chargedup.robot.subsystems.DriveTrain;
-import com.rambots4571.chargedup.robot.subsystems.Elevator;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -46,23 +44,20 @@ public class RobotContainer {
 
   // Subsytems
   private final DriveTrain driveTrain;
-  private final Elevator elevator;
   private final Arm arm;
   private final Claw claw;
 
   // Commands
   private final SwerveDriveCommand swerveDriveCommand;
-  private final TestElevatorCommand testElevatorCommand;
   private final TestArmCommand testArmCommand;
   private final BalanceOnBeam balanceOnBeam;
 
   public RobotContainer() {
     driveTrain = DriveTrain.getInstance();
-    elevator = Elevator.getInstance();
     arm = Arm.getInstance();
     claw = Claw.getInstance();
 
-    scoringState = new ScoringState(elevator, arm);
+    scoringState = new ScoringState(arm);
 
     swerveDriveCommand =
         new SwerveDriveCommand(
@@ -75,13 +70,6 @@ public class RobotContainer {
     driveTrain.setDefaultCommand(swerveDriveCommand);
 
     balanceOnBeam = new BalanceOnBeam(driveTrain);
-
-    testElevatorCommand =
-        new TestElevatorCommand(
-            elevator, () -> driverController.getAxisValue(PS4Controller.Axis.RightY));
-
-    // TODO: uncomment to test elevator
-    elevator.setDefaultCommand(testElevatorCommand);
 
     testArmCommand = new TestArmCommand(arm, () -> gamepad.getAxisValue(Gamepad.Axis.RightXAxis));
 
@@ -137,7 +125,7 @@ public class RobotContainer {
     driverController
         .getDPadButton(Direction.RIGHT)
         .whileTrue(
-            new RunEndCommand(scoringState::goToPosition, scoringState::stop, elevator, arm));
+            new RunEndCommand(scoringState::goToPosition, scoringState::stop, arm));
 
     gamepad
         .getButton(Gamepad.Button.X)
@@ -166,23 +154,23 @@ public class RobotContainer {
   }
 
   private Command togglePositionMode() {
-    return new InstantCommand(scoringState::toggleMode, elevator, arm);
+    return new InstantCommand(scoringState::toggleMode, arm);
   }
 
   private Command stepUp() {
-    return new InstantCommand(scoringState::stepUp, elevator, arm);
+    return new InstantCommand(scoringState::stepUp, arm);
   }
 
   private Command stepDown() {
-    return new InstantCommand(scoringState::stepDown, elevator, arm);
+    return new InstantCommand(scoringState::stepDown, arm);
   }
 
   private Command bottomHeight() {
-    return runAfterSomeTime(scoringState::minPos, 1, elevator, arm);
+    return runAfterSomeTime(scoringState::minPos, 1, arm);
   }
 
   private Command topHeight() {
-    return runAfterSomeTime(scoringState::maxPos, 1, elevator, arm);
+    return runAfterSomeTime(scoringState::maxPos, 1, arm);
   }
 
   private Command runAfterSomeTime(Runnable func, double seconds, SubsystemBase... subsytem) {
