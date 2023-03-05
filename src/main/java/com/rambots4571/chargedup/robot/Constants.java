@@ -251,7 +251,9 @@ public final class Constants {
 
     public static final IdleMode MODE = IdleMode.kBrake;
 
-    public static final boolean WRIST_INVERSION = true;
+    public static final boolean LEFT_WRIST_INVERSION = true;
+    public static final boolean RIGHT_WRIST_INVERSION = false;
+    
     // Amps
     public static final int FULL_NEO_LIMIT = 50;
     public static final int NEO_550_LIMIT = 20;

@@ -11,7 +11,6 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.chargedup.robot.commands.arm.TestArmCommand;
-import com.rambots4571.chargedup.robot.commands.arm.TestClaw;
 import com.rambots4571.chargedup.robot.commands.drive.BalanceOnBeam;
 import com.rambots4571.chargedup.robot.commands.drive.SwerveDriveCommand;
 import com.rambots4571.chargedup.robot.state.ScoringState;
@@ -57,7 +56,7 @@ public class RobotContainer {
     arm = Arm.getInstance();
     claw = Claw.getInstance();
 
-    scoringState = new ScoringState(arm);
+    scoringState = new ScoringState(arm, claw);
 
     swerveDriveCommand =
         new SwerveDriveCommand(
@@ -126,20 +125,6 @@ public class RobotContainer {
         .getDPadButton(Direction.RIGHT)
         .whileTrue(
             new RunEndCommand(scoringState::goToPosition, scoringState::stop, arm));
-
-    gamepad
-        .getButton(Gamepad.Button.X)
-        .whileTrue(
-            new RunEndCommand(
-                () -> {
-                  claw.setSpeed(1);
-                },
-                () -> {
-                  claw.stop();
-                },
-                claw));
-
-    gamepad.getButton(Gamepad.Button.Y).whileTrue(new TestClaw(claw));
 
     // (Driver) Right Bumper -> Balance on Beam
     driverController.getButton(PS4Controller.Button.R1).whileTrue(balanceOnBeam);
