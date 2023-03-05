@@ -17,9 +17,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj2.command.Command;
 
-import java.util.HashMap;
 import java.util.List;
 
 public final class Constants {
@@ -253,7 +251,7 @@ public final class Constants {
 
     public static final boolean LEFT_WRIST_INVERSION = true;
     public static final boolean RIGHT_WRIST_INVERSION = false;
-    
+
     // Amps
     public static final int FULL_NEO_LIMIT = 50;
     public static final int NEO_550_LIMIT = 20;
@@ -282,12 +280,10 @@ public final class Constants {
     public static final Rotation2d STARTING_ANGLE = new Rotation2d();
 
     public static final Pose2d STARTING_POSITION = new Pose2d(STARTING_TRANSLATION, STARTING_ANGLE);
-
-    public static HashMap<String, Command> eventMap = new HashMap<String, Command>();
   }
 
   public static final class AutoPaths {
-    public static final List<PathPlannerTrajectory> Test = PathPlanner.loadPathGroup("Test", 3, 4);
-    public static HashMap<String, Command> eventMap = new HashMap<String, Command>();
+    public static final List<PathPlannerTrajectory> Taxi = PathPlanner.loadPathGroup("Taxi", 3, 3);
+    public static final List<PathPlannerTrajectory> CubeBalance = PathPlanner.loadPathGroup("1CubeBalance", 3, 4);
   }
 }

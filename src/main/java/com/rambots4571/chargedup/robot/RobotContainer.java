@@ -6,8 +6,10 @@ import com.rambots4571.rampage.controller.PS4Controller;
 import com.rambots4571.rampage.controller.PS4Controller.Button;
 import com.rambots4571.rampage.controller.component.DPadButton.Direction;
 
-import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import java.util.HashMap;
 
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.rambots4571.chargedup.robot.Constants.AutoPaths;
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Constants.Settings;
 import com.rambots4571.chargedup.robot.commands.arm.TestArmCommand;
@@ -22,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -38,6 +41,7 @@ public class RobotContainer {
   public final SwerveAutoBuilder autoBuilder;
 
   public final SendableChooser<Command> autonChooser = new SendableChooser<>();
+  public static HashMap<String, Command> eventMap = new HashMap<String, Command>();
 
   private final ScoringState scoringState;
 
@@ -84,10 +88,15 @@ public class RobotContainer {
             DriveConstants.tranlationPID,
             DriveConstants.rotationPID,
             driveTrain::setModuleStates,
-            Settings.eventMap,
+            eventMap,
             driveTrain);
 
+    Command Taxi = autoBuilder.fullAuto(AutoPaths.Taxi);
+    Command OneCubeBalance = autoBuilder.fullAuto(AutoPaths.CubeBalance);        
+
     autonChooser.addOption("Bare Wasteman", null);
+    autonChooser.addOption("One Cube Balance", OneCubeBalance);
+    autonChooser.addOption("Taxi", Taxi);
 
     SmartDashboard.putData("Auton Chooser", autonChooser);
 
@@ -97,7 +106,10 @@ public class RobotContainer {
     configureButtonBindings();
   }
 
-  private void setEventMap() {}
+  private void setEventMap() {
+    eventMap.put("ScoreCube", new RunCommand(scoringState::maxPos, arm, claw));
+    eventMap.put("Balance", balanceOnBeam);
+  }
 
   private void configureButtonBindings() {
     // (Driver) Y -> Reset Gyro
