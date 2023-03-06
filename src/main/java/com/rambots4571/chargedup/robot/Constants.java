@@ -17,7 +17,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-
 import java.util.List;
 
 public final class Constants {
@@ -121,7 +120,7 @@ public final class Constants {
     public static final double angleKF = chosenModule.getAngleKF();
 
     /* Drive Motor PID Values */
-    public static final double driveKP = 0.15; // TODO: Tuned but further tuning is better
+    public static final double driveKP = 0.22; // TODO: Tuned but further tuning is better
     public static final double driveKI = 0.0;
     public static final double driveKD = 0.0;
     public static final double driveKF = 0.0;
@@ -284,6 +283,7 @@ public final class Constants {
 
   public static final class AutoPaths {
     public static final List<PathPlannerTrajectory> Taxi = PathPlanner.loadPathGroup("Taxi", 3, 3);
-    public static final List<PathPlannerTrajectory> CubeBalance = PathPlanner.loadPathGroup("1CubeBalance", 3, 4);
+    public static final List<PathPlannerTrajectory> CubeBalance =
+        PathPlanner.loadPathGroup("1CubeBalance", 3, 4);
   }
 }

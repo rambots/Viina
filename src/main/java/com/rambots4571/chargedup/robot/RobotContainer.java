@@ -6,9 +6,8 @@ import com.rambots4571.rampage.controller.PS4Controller;
 import com.rambots4571.rampage.controller.PS4Controller.Button;
 import com.rambots4571.rampage.controller.component.DPadButton.Direction;
 
-import java.util.HashMap;
-
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
+
 import com.rambots4571.chargedup.robot.Constants.AutoPaths;
 import com.rambots4571.chargedup.robot.Constants.DriveConstants;
 import com.rambots4571.chargedup.robot.Constants.Settings;
@@ -28,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import java.util.HashMap;
 
 public class RobotContainer {
 
@@ -66,7 +66,7 @@ public class RobotContainer {
         new SwerveDriveCommand(
             driveTrain,
             () -> -driverController.getAxisValue(PS4Controller.Axis.LeftY),
-            () -> -driverController.getAxisValue(PS4Controller.Axis.LeftX),
+            () -> driverController.getAxisValue(PS4Controller.Axis.LeftX),
             () -> -driverController.getAxisValue(PS4Controller.Axis.RightX),
             () -> robotCentricToggle.getAsBoolean());
 
@@ -92,7 +92,7 @@ public class RobotContainer {
             driveTrain);
 
     Command Taxi = autoBuilder.fullAuto(AutoPaths.Taxi);
-    Command OneCubeBalance = autoBuilder.fullAuto(AutoPaths.CubeBalance);        
+    Command OneCubeBalance = autoBuilder.fullAuto(AutoPaths.CubeBalance);
 
     autonChooser.addOption("Bare Wasteman", null);
     autonChooser.addOption("One Cube Balance", OneCubeBalance);
@@ -135,8 +135,7 @@ public class RobotContainer {
     // (Driver) Right DPad -> Set Height
     driverController
         .getDPadButton(Direction.RIGHT)
-        .whileTrue(
-            new RunEndCommand(scoringState::goToPosition, scoringState::stop, arm));
+        .whileTrue(new RunEndCommand(scoringState::goToPosition, scoringState::stop, arm));
 
     // (Driver) Right Bumper -> Balance on Beam
     driverController.getButton(PS4Controller.Button.R1).whileTrue(balanceOnBeam);
