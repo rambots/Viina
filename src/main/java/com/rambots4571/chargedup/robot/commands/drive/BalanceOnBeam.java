@@ -13,8 +13,8 @@ public class BalanceOnBeam extends CommandBase {
   private final PIDController forwardController;
 
   private final double kP = 0.1;
-  private final double kI = 0.1;
-  private final double kD = 0.1;
+  private final double kI = 0;
+  private final double kD = 0;
 
   private final double maxOutput = 0.5;
 
